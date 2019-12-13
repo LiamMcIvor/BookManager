@@ -20,6 +20,17 @@ public class Author {
 
 	private String firstName;
 	private String lastName;
+	
+	
+	public Author() {
+		super();
+	}
+
+	public Author(String firstName, String lastName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 
 	public Long getId() {
 		return id;

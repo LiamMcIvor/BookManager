@@ -121,11 +121,6 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (Authors == null) {
-			if (other.Authors != null)
-				return false;
-		} else if (!Authors.equals(other.Authors))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
