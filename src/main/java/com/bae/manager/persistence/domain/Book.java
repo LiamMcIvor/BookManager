@@ -31,6 +31,20 @@ public class Book {
 	private Owned owned;
 	private Completion completion;
 
+	public Book() {
+		super();
+	}
+
+	public Book(String title, String isbn, String series, int timesRead, Owned owned, Completion completion) {
+		super();
+		this.title = title;
+		this.isbn = isbn;
+		this.series = series;
+		this.timesRead = timesRead;
+		this.owned = owned;
+		this.completion = completion;
+	}
+
 	public Long getId() {
 		return id;
 	}

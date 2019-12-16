@@ -38,7 +38,7 @@ public class AuthorUnitTests {
 
 	private Author testAuthor;
 
-	private Author testAuthorWIthId;
+	private Author testAuthorWithId;
 
 	private Author testAuthorFail;
 
@@ -54,8 +54,8 @@ public class AuthorUnitTests {
 	public void init() {
 		this.authorList = new ArrayList<>();
 		this.testAuthor = new Author("Terry Pratchett");
-		this.testAuthorWIthId = new Author(testAuthor.getPenName());
-		this.testAuthorWIthId.setId(id);
+		this.testAuthorWithId = new Author(testAuthor.getPenName());
+		this.testAuthorWithId.setId(id);
 		this.authorList.add(testAuthor);
 		this.authorList.add(testAuthor);
 		this.testAuthorFail = new Author(this.length251);
@@ -68,8 +68,8 @@ public class AuthorUnitTests {
 
 	@Test
 	public void createAuthorTest() {
-		when(this.repo.save(this.testAuthor)).thenReturn(this.testAuthorWIthId);
-		assertEquals(this.testAuthorWIthId, this.service.createAuthor(this.testAuthor));
+		when(this.repo.save(this.testAuthor)).thenReturn(this.testAuthorWithId);
+		assertEquals(this.testAuthorWithId, this.service.createAuthor(this.testAuthor));
 		verify(this.repo, times(1)).save(this.testAuthor);
 	}
 
