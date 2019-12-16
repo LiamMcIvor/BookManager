@@ -23,7 +23,7 @@ public class AuthorService {
 	}
 
 	public Author createAuthor(Author author) throws InvalidEntryException, DuplicateValueException {
-		if ((author.getFirstName() + " " + author.getLastName()).length() > 250) {
+		if (author.getPenName().length() > 250) {
 			throw new InvalidEntryException();
 		} else if (findRepeatedAuthor(author)) {
 			throw new DuplicateValueException();
@@ -32,12 +32,16 @@ public class AuthorService {
 	}
 
 	public Boolean findRepeatedAuthor(Author author) {
-		filteredAuthors = this.repo.findByLastName(author.getLastName());
+		filteredAuthors = this.getAllAuthors();
 		if (filteredAuthors.contains(author)) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	private List<Author> getAllAuthors() {
+		return this.repo.findAll();
 	}
 
 }

@@ -18,18 +18,16 @@ public class Author {
 	@ManyToMany(mappedBy = "Authors")
 	private Set<Book> books;
 
-	private String firstName;
-	private String lastName;
+	private String penName;
 	
 	
 	public Author() {
 		super();
 	}
 
-	public Author(String firstName, String lastName) {
+	public Author(String penName) {
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.penName = penName;
 	}
 
 	public Long getId() {
@@ -48,33 +46,26 @@ public class Author {
 		this.books = books;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getPenName() {
+		return penName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setPenName(String penName) {
+		this.penName = penName;
 	}
 
-	public String getLastName() {
-		return lastName;
-	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 	@Override
 	public String toString() {
-		return "Author [id=" + id + ", books=" + books + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+		return "Author [Author ID = " + id + ", Pen Name = " + penName + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((penName == null) ? 0 : penName.hashCode());
 		return result;
 	}
 
@@ -87,15 +78,10 @@ public class Author {
 		if (getClass() != obj.getClass())
 			return false;
 		Author other = (Author) obj;
-		if (firstName == null) {
-			if (other.firstName != null)
+		if (penName == null) {
+			if (other.penName != null)
 				return false;
-		} else if (!firstName.equals(other.firstName))
-			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
+		} else if (!penName.equals(other.penName))
 			return false;
 		return true;
 	}
