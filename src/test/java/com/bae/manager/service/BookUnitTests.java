@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,7 +21,7 @@ import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
 
 @RunWith(SpringRunner.class)
-class BookUnitTests {
+public class BookUnitTests {
 	
 	@InjectMocks
 	private BookService service;
@@ -48,24 +48,21 @@ class BookUnitTests {
 	
 	@Before
 	public void init() {
-		System.out.println("entered");
-//		this.bookList = new ArrayList<>();
-//		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
-//		System.out.println("here");
-//		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
-//		this.testBookWithId.setId(id);
-//		this.bookList.add(testBook);
-//		this.bookList.add(testBook);
-//		this.testBookFail = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
-//		this.testBookFail.setId(id);
-//		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getIsbn(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
-//		this.testBookFailWithId.setId(id);
-//		this.invalidId = 2L;
+		this.bookList = new ArrayList<>();
+		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
+		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBookWithId.setId(id);
+		this.bookList.add(testBook);
+		this.bookList.add(testBook);
+		this.testBookFail = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBookFail.setId(id);
+		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getIsbn(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
+		this.testBookFailWithId.setId(id);
+		this.invalidId = 2L;
 	}
 
 	@Test
-	void createBookTest() {
-		System.out.println("here");
+	public void createBookTest() {
 		when(this.repo.save(this.testBook)).thenReturn(this.testBookWithId);
 		assertEquals(this.testBookWithId, this.service.createBook(this.testBook));
 		verify(this.repo, times(1)).save(this.testBook);		
