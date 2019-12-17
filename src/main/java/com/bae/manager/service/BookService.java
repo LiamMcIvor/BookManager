@@ -21,11 +21,11 @@ public class BookService {
 	}
 	
 	public Book createBook(Book book) throws InvalidEntryException, DuplicateValueException {
-		if (book.getTitle().length() > 500) {
+		/*if (book.getTitle().length() > 250) {
 			throw new InvalidEntryException();
 		} else if (findRepeatedBook(book)) {
 			throw new DuplicateValueException();
-		}
+		}*/
 		return this.repo.save(book);
 	}
 
