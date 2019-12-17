@@ -80,7 +80,6 @@ public class AuthorUnitTests {
 		assertThrows(DuplicateValueException.class, () -> {
 			this.service.createAuthor(this.testAuthor);
 			verify(this.repo, times(1)).findAll();
-
 		});
 	}
 

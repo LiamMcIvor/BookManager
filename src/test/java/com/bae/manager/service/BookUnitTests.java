@@ -1,6 +1,9 @@
 package com.bae.manager.service;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
+import com.bae.manager.exception.DuplicateValueException;
+import com.bae.manager.exception.InvalidEntryException;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
 
@@ -67,6 +72,37 @@ public class BookUnitTests {
 		assertEquals(this.testBookWithId, this.service.createBook(this.testBook));
 		verify(this.repo, times(1)).save(this.testBook);		
 	}
+	
+	@Test
+	public void duplicateBookTest() {
+		when(this.repo.findAll()).thenReturn(this.bookList);
+		assertTrue(this.service.findRepeatedBook(this.testBook));
+		System.out.println(this.testBook);
+		System.out.println(this.testBookFail);
+		assertFalse(this.service.findRepeatedBook(this.testBookFail));
+		verify(this.repo, times(2)).findAll();
+		}
+	
+	@Test
+	public void createDuplicateBookTest() {
+		when(this.repo.findAll()).thenReturn(this.bookList);
+		assertThrows(DuplicateValueException.class, () -> {
+			this.service.createBook(this.testBook);
+			verify(this.repo, times(1)).findAll();
+		});
+	}
+	
+	@Test
+	public void titleTooLongTest() {
+		testBookFail.setTitle(length251);
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+		testBookFail.setTitle(testBook.getTitle());
+	}
+	
+	@Test
+	public void 
 	
 	
 
