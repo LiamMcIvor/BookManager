@@ -102,7 +102,40 @@ public class BookUnitTests {
 	}
 	
 	@Test
-	public void 
+	public void isbnRulesTest() {
+		testBookFail.setIsbn("12");
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+		testBookFail.setIsbn("10258745212");
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+		testBookFail.setIsbn("12675963415872");
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+		testBookFail.setIsbn("1j2");
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+		testBookFail.setIsbn(testBook.getIsbn());
+	}
+	
+	@Test
+	public void timesReadRulesTest() {
+		testBookFail.setTimesRead(-1);
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+		testBookFail.setTimesRead(1001);
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+		testBookFail.setTimesRead(testBook.getTimesRead());
+
+
+	}
 	
 	
 
