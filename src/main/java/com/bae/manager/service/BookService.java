@@ -27,7 +27,7 @@ public class BookService {
 		this.repo = repo;
 	}
 	
-	public Book createBook(Book book) throws InvalidEntryException, DuplicateValueException {
+	public Book createBook(Book book) {
 		if (book.getTitle().length() > 250) {
 			throw new InvalidEntryException();
 		} else if (findRepeatedBook(book)) {
@@ -47,12 +47,8 @@ public class BookService {
 	}
 
 	public boolean findRepeatedBook(Book book) {
-			filteredBooks = this.getAllBooks();
-			if (filteredBooks.contains(book)) {
-				return true;
-			} else {
-				return false;
-			}
+		filteredBooks = this.getAllBooks();
+		return filteredBooks.contains(book);
 	}
 
 	public List<Book> getAllBooks() {

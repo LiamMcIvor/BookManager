@@ -22,7 +22,7 @@ public class Book {
 
 	@ManyToMany
 	@JoinTable(name = "author_book_link", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "id"))
-	private Set<Author> Authors;
+	private Set<Author> authors;
 
 	private String title;
 	private String isbn;
@@ -54,11 +54,11 @@ public class Book {
 	}
 
 	public Set<Author> getAuthors() {
-		return Authors;
+		return authors;
 	}
 
 	public void setAuthors(Set<Author> authors) {
-		Authors = authors;
+		this.authors = authors;
 	}
 
 	public String getTitle() {
@@ -111,7 +111,7 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", Authors=" + Authors + ", title=" + title + ", isbn=" + isbn + ", series=" + series
+		return "Book [id=" + id + ", Authors=" + authors + ", title=" + title + ", isbn=" + isbn + ", series=" + series
 				+ ", timesRead=" + timesRead + ", owned=" + owned + ", completion=" + completion + "]";
 	}
 
@@ -119,7 +119,7 @@ public class Book {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((Authors == null) ? 0 : Authors.hashCode());
+		result = prime * result + ((authors == null) ? 0 : authors.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());

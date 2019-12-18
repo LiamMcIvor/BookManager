@@ -50,6 +50,8 @@ public class BookUnitTests {
 	private Book testBookFail;
 	
 	private Book testBookFailWithId;
+
+	private Book updatedBook;
 	
 	@Before
 	public void init() {
@@ -133,10 +135,20 @@ public class BookUnitTests {
 			this.service.createBook(this.testBookFail);
 		});
 		testBookFail.setTimesRead(testBook.getTimesRead());
-
-
 	}
 	
+	@Test
+	public void getAllBooksTest() {
+		when(this.repo.findAll()).thenReturn(this.bookList);
+		assertEquals(this.bookList, this.service.getAllBooks());
+	}
+	
+	@Test
+	public void updateBooksTest() {
+		this.updatedBook = new Book("The color of Magic", "9752368741", testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+
+		when(this.repo.save(this.updatedBook)).thenReturn(this.updatedBook);
+	}
 	
 
 }
