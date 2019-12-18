@@ -1,6 +1,5 @@
 package com.bae.manager.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import com.bae.manager.persistence.repo.AuthorRepo;
 @Service
 public class AuthorService {
 	private AuthorRepo repo;
-	private List<Author> filteredAuthors = new ArrayList<>();
 
 	@Autowired
 	public AuthorService(AuthorRepo repo) {
@@ -33,8 +31,7 @@ public class AuthorService {
 	}
 
 	public Boolean findRepeatedAuthor(Author author) {
-		filteredAuthors = this.getAllAuthors();
-		return filteredAuthors.contains(author);
+		return this.getAllAuthors().contains(author);
 	}
 
 	public List<Author> getAllAuthors() {

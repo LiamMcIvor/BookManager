@@ -3,7 +3,6 @@ package com.bae.manager.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,9 +17,7 @@ import com.bae.manager.persistence.repo.BookRepo;
 public class BookService {
 	
 	private BookRepo repo;
-	private List<Book> filteredBooks = new ArrayList<>();
-
-
+	
 	@Autowired
 	public BookService(BookRepo repo) {
 		super();
@@ -47,8 +44,7 @@ public class BookService {
 	}
 
 	public boolean findRepeatedBook(Book book) {
-		filteredBooks = this.getAllBooks();
-		return filteredBooks.contains(book);
+		return this.getAllBooks().contains(book);
 	}
 
 	public List<Book> getAllBooks() {
