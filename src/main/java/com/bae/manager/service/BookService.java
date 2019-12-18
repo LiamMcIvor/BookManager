@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 
 import com.bae.manager.exception.DuplicateValueException;
+import com.bae.manager.exception.EntryNotFoundException;
 import com.bae.manager.exception.InvalidEntryException;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
@@ -59,6 +60,10 @@ public class BookService {
 		toUpdate.setOwned(book.getOwned());
 		toUpdate.setCompletion(book.getCompletion());
 		return this.repo.save(toUpdate);
+	}
+
+	public Book findBookById(long id) {
+		return this.repo.findById(id).orElseThrow(EntryNotFoundException::new);
 	}
 
 }
