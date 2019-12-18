@@ -51,4 +51,9 @@ public class BookService {
 		return this.repo.findAll();
 	}
 
+	public Book updateBook(Book book, long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

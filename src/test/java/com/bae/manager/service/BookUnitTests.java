@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +52,6 @@ public class BookUnitTests {
 	
 	private Book testBookFailWithId;
 
-	private Book updatedBook;
-	
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
@@ -145,10 +144,22 @@ public class BookUnitTests {
 	
 	@Test
 	public void updateBooksTest() {
-		this.updatedBook = new Book("The color of Magic", "9752368741", testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
-
-		when(this.repo.save(this.updatedBook)).thenReturn(this.updatedBook);
+		Book newBook = new Book("The color of Magic", "9752368741", "DiskWorld", 3, Owned.WISHLIST, Completion.TO_READ);
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getIsbn(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		updatedBook.setId(this.id);
+		
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+		when(this.repo.save(updatedBook)).thenReturn(updatedBook);
+		
+		assertEquals(updatedBook, this.service.updateBook(newBook, this.id));
+		
+		verify(this.repo, times(1)).findById(this.id);
+		verify(this.repo, times(1)).save(updatedBook);
+		
+		
 	}
+	
+	
 	
 
 }
