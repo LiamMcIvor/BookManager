@@ -52,8 +52,13 @@ public class BookService {
 	}
 
 	public Book updateBook(Book book, long id) {
-		// TODO Auto-generated method stub
-		return null;
+		Book toUpdate = findBookById(id);
+		toUpdate.setTitle(book.getTitle());
+		toUpdate.setSeries(book.getSeries());
+		toUpdate.setIsbn(book.getIsbn());
+		toUpdate.setOwned(book.getOwned());
+		toUpdate.setCompletion(book.getCompletion());
+		return this.repo.save(toUpdate);
 	}
 
 }
