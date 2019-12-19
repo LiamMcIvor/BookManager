@@ -72,4 +72,10 @@ public class BookService {
 		return true;
 	}
 
+	public boolean deleteBook(long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+
 }

@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
 import com.bae.manager.exception.DuplicateValueException;
+import com.bae.manager.exception.EntryNotFoundException;
 import com.bae.manager.exception.InvalidEntryException;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
@@ -99,7 +100,6 @@ public class BookUnitTests {
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
-		testBookFail.setTitle(testBook.getTitle());
 	}
 	
 	@Test
@@ -120,7 +120,6 @@ public class BookUnitTests {
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
-		testBookFail.setIsbn(testBook.getIsbn());
 	}
 	
 	@Test
@@ -156,6 +155,16 @@ public class BookUnitTests {
 		verify(this.repo, times(1)).findById(this.id);
 		verify(this.repo, times(1)).save(updatedBook);
 		
+	}
+	
+	@Test
+	public void deleteBookTest() {
+		when(this.repo.existsById(id)).thenReturn(true, false);
+		
+		assertFalse(this.service.deleteBook(id));
+		assertThrows(EntryNotFoundException.class, EntryNotFoundException::new);
+		verify(this.repo, times(1)).deleteById(id);
+		verify(this.repo, times(3)).existsById(id);
 		
 	}
 	
