@@ -10,14 +10,17 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.service.BookService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BookControllerUnitTest {
 	
 	@InjectMocks
@@ -48,7 +51,7 @@ public class BookControllerUnitTest {
 	@Test
 	public void createBookTest() {
 		when(this.service.createBook(testBook)).thenReturn(this.testBookWithId);
-		assertEquals(this.testBookWithId, this.service.createBook(testBook));
+		assertEquals(this.testBookWithId, this.controller.createBook(testBook));
 		verify(this.service, times(1)).createBook(testBook);		
 	}
 
