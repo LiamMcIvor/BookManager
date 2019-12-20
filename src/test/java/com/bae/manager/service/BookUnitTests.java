@@ -96,7 +96,7 @@ public class BookUnitTests {
 	
 	@Test
 	public void titleTooLongTest() {
-		testBookFail.setTitle(length251);
+		this.testBookFail.setTitle(length251);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
@@ -104,19 +104,19 @@ public class BookUnitTests {
 	
 	@Test
 	public void isbnRulesTest() {
-		testBookFail.setIsbn("12");
+		this.testBookFail.setIsbn("12");
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
-		testBookFail.setIsbn("10258745212");
+		this.testBookFail.setIsbn("10258745212");
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
-		testBookFail.setIsbn("12675963415872");
+		this.testBookFail.setIsbn("12675963415872");
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
-		testBookFail.setIsbn("1j2");
+		this.testBookFail.setIsbn("1j2");
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
@@ -124,15 +124,14 @@ public class BookUnitTests {
 	
 	@Test
 	public void timesReadRulesTest() {
-		testBookFail.setTimesRead(-1);
+		this.testBookFail.setTimesRead(-1);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
-		testBookFail.setTimesRead(1001);
+		this.testBookFail.setTimesRead(1001);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
-		testBookFail.setTimesRead(testBook.getTimesRead());
 	}
 	
 	@Test
@@ -159,20 +158,27 @@ public class BookUnitTests {
 	
 	@Test
 	public void deleteBookTest() {
-		when(this.repo.existsById(id)).thenReturn(true, false);
+		when(this.repo.existsById(this.id)).thenReturn(true, false);
 		
-		assertFalse(this.service.deleteBook(id));
+		assertFalse(this.service.deleteBook(this.id));
 		assertThrows(EntryNotFoundException.class, () -> {
-			this.service.deleteBook(id);
+			this.service.deleteBook(this.id);
 		});
-		verify(this.repo, times(1)).deleteById(id);
-		verify(this.repo, times(3)).existsById(id);
+		verify(this.repo, times(1)).deleteById(this.id);
+		verify(this.repo, times(3)).existsById(this.id);
 		
 	}
 	
-	
-	
-	
+	@Test
+	public void findBookByIdTest() {
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+		
+		assertEquals(testBookWithId, this.service.findBookById(this.id));
+		assertThrows(EntryNotFoundException.class, () -> {
+			this.service.findBookById(this.invalidId);
+		});
+		verify(this.repo, times(1)).findById(this.id);
+	}
 	
 
 }
