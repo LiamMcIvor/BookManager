@@ -162,11 +162,15 @@ public class BookUnitTests {
 		when(this.repo.existsById(id)).thenReturn(true, false);
 		
 		assertFalse(this.service.deleteBook(id));
-		assertThrows(EntryNotFoundException.class, EntryNotFoundException::new);
+		assertThrows(EntryNotFoundException.class, () -> {
+			this.service.deleteBook(id);
+		});
 		verify(this.repo, times(1)).deleteById(id);
 		verify(this.repo, times(3)).existsById(id);
 		
 	}
+	
+	
 	
 	
 	

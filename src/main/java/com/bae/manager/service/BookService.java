@@ -73,8 +73,11 @@ public class BookService {
 	}
 
 	public boolean deleteBook(long id) {
-		// TODO Auto-generated method stub
-		return false;
+		if (!this.repo.existsById(id)) {
+			throw new EntryNotFoundException();
+		}
+		this.repo.deleteById(id);
+		return this.repo.existsById(id);
 	}
 	
 
