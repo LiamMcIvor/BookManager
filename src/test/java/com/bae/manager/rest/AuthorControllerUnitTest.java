@@ -48,7 +48,7 @@ public class AuthorControllerUnitTest {
 	@Test
 	public void createAuthorTest() {
 		when(this.service.createAuthor(testAuthor)).thenReturn(testAuthorWithId);
-		assertArrayEquals(this.testAuthorWithId, this.controller.createAuthor(testAuthor));
+		assertEquals(this.testAuthorWithId, this.controller.createAuthor(testAuthor));
 		verify(this.service, times(1)).createAuthor(this.testAuthor);
 	}
 
