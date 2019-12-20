@@ -51,5 +51,12 @@ public class AuthorControllerUnitTest {
 		assertEquals(this.testAuthorWithId, this.controller.createAuthor(testAuthor));
 		verify(this.service, times(1)).createAuthor(this.testAuthor);
 	}
+	
+	@Test
+	public void deleteAllAuthorsTest() {
+		when(this.service.getAllAuthors()).thenReturn(this.authorList);
+		assertFalse("Controller has found no authors", this.controller.getAllAuthors().isEmpty());
+		verify(this.service, times(1)).getAllAuthors();
+	}
 
 }
