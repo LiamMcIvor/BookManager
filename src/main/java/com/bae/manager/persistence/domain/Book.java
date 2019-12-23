@@ -18,10 +18,10 @@ public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	Long bookId;
 
 	@ManyToMany
-	@JoinTable(name = "author_book_link", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "id"))
+	@JoinTable(name = "author_book_link", joinColumns = @JoinColumn(name = "bookId"), inverseJoinColumns = @JoinColumn(name = "AuthorId"))
 	private Set<Author> authors;
 
 	private String title;
@@ -46,11 +46,11 @@ public class Book {
 	}
 
 	public Long getId() {
-		return id;
+		return bookId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.bookId = id;
 	}
 
 	public Set<Author> getAuthors() {
@@ -111,7 +111,7 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", Authors=" + authors + ", title=" + title + ", isbn=" + isbn + ", series=" + series
+		return "Book [id=" + bookId + ", Authors=" + authors + ", title=" + title + ", isbn=" + isbn + ", series=" + series
 				+ ", timesRead=" + timesRead + ", owned=" + owned + ", completion=" + completion + "]";
 	}
 
@@ -120,7 +120,7 @@ public class Book {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((authors == null) ? 0 : authors.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
 		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
@@ -135,10 +135,10 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (bookId == null) {
+			if (other.bookId != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!bookId.equals(other.bookId))
 			return false;
 		if (isbn == null) {
 			if (other.isbn != null)
