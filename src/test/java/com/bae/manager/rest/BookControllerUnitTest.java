@@ -46,8 +46,6 @@ public class BookControllerUnitTest {
 		this.bookList.add(testBook);
 	}
 	
-	
-
 	@Test
 	public void createBookTest() {
 		when(this.service.createBook(testBook)).thenReturn(this.testBookWithId);
@@ -73,7 +71,16 @@ public class BookControllerUnitTest {
 	public void deleteBookByIdTest() {
 		this.controller.deleteBook(this.id);
 		verify(this.service, times(1)).deleteBook(this.id);
-		
+	}
+	
+	@Test
+	public void updateBookTest() {
+		Book newBook = new Book("The Color of Magic", "97800616855", "Diskworld", 2, Owned.OWNED, Completion.READ);
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getIsbn(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		updatedBook.setId(this.id);
+		when(this.service.updateBook(newBook, this.id)).thenReturn(updatedBook);
+		assertEquals(updatedBook, this.controller.updateBook(newBook, this.id));
+		verify(this.service, times(1)).updateBook(newBook, this.id);
 	}
 
 }
