@@ -53,7 +53,7 @@ public class AuthorControllerUnitTest {
 	}
 	
 	@Test
-	public void deleteAllAuthorsTest() {
+	public void getAllAuthorsTest() {
 		when(this.service.getAllAuthors()).thenReturn(this.authorList);
 		assertFalse("Controller has found no authors", this.controller.getAllAuthors().isEmpty());
 		verify(this.service, times(1)).getAllAuthors();

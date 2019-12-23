@@ -54,5 +54,26 @@ public class BookControllerUnitTest {
 		assertEquals(this.testBookWithId, this.controller.createBook(testBook));
 		verify(this.service, times(1)).createBook(testBook);		
 	}
+	
+	@Test
+	public void getAllBooksTest() {
+		when(this.service.getAllBooks()).thenReturn(this.bookList);
+		assertFalse("The book list is empty", this.controller.getAllBooks().isEmpty());
+		verify(this.service, times(1)).getAllBooks();		
+	}
+	
+	@Test
+	public void getBookByIdTest() {
+		when(this.service.findBookById(this.id)).thenReturn(testBookWithId);
+		assertEquals(this.testBookWithId, this.controller.getBook(this.id));
+		verify(this.service, times(1)).findBookById(this.id);
+	}
+	
+	@Test
+	public void deleteBookByIdTest() {
+		this.controller.deleteBook(this.id);
+		verify(this.service, times(1)).deleteBook(this.id);
+		
+	}
 
 }

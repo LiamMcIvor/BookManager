@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,11 +25,11 @@ public class AuthorController {
 	}
 	
 	@PostMapping("/createAuthor")
-	public Author createAuthor(Author author) {
+	public Author createAuthor(@RequestBody Author author) {
 		return this.service.createAuthor(author);
 	}
 
-	@GetMapping("/getAuthors")
+	@GetMapping("/getAll")
 	public List<Author> getAllAuthors() {
 		return this.service.getAllAuthors();
 	}
