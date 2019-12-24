@@ -1,0 +1,6 @@
+.body-book {
+    background-image: url("./books-background.jpeg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
