@@ -13,7 +13,7 @@ public class Author {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long authorId;
 
 	@ManyToMany(mappedBy = "authors")
 	private Set<Book> books;
@@ -31,11 +31,11 @@ public class Author {
 	}
 
 	public Long getId() {
-		return id;
+		return authorId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.authorId = id;
 	}
 
 	public Set<Book> getBooks() {
@@ -58,7 +58,7 @@ public class Author {
 
 	@Override
 	public String toString() {
-		return "Author [Author ID = " + id + ", Pen Name = " + penName + "]";
+		return "Author [Author ID = " + authorId + ", Pen Name = " + penName + "]";
 	}
 
 	@Override
