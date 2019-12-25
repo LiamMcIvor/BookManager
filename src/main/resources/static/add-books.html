@@ -12,15 +12,77 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#pageNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
                     <a href="#" class="navbar-brand">Book Manager</a>
                 </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="./index.html">Home</a></li>
-                    <li class="active"><a href="./add-books.html">Add Books</a></li>
-                    <li><a href="./update-books.html">Update/Delete Books</a></li>
-                </ul>
+                <div class="collapse navbar-collapse" id="pageNavbar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="./index.html">Home</a></li>
+                        <li class="active"><a href="./add-books.html">Add Books</a></li>
+                        <li><a href="./update-books.html">Update/Delete Books</a></li>
+                    </ul>
+                </div>
             </div>
         </nav>
+        <div class="container custom-form-background">
+            <h2>Add a Book</h2>
+            <form action="">
+              <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" id="title" placeholder="Enter Book Title" name="title">
+              </div>
+              <div class="form-group">
+                <label for="author">Author:</label>
+                <input type="text" class="form-control" id="author" placeholder="Enter Author" name="author">
+              </div>
+              <div class="form-group">
+                <label for="isbn">ISBN:</label>
+                <input type="number" class="form-control" id="isbn" placeholder="Enter ISBN" name="isbn">
+              </div>
+              <div class="form-group">
+                <label for="series">Series:</label>
+                <input type="text" class="form-control" id="series" placeholder="Enter Series or N/A" name="series">
+              </div>
+              <div class="form-group">
+                <label for="ownedWishlist">Is the Book Owned or on Your Wishlist?</label>
+                <br>
+                <label class="radio-inline">
+                    <input type="radio" id="owned" name="ownedWishlist">
+                    Owned
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="wishlist" name="ownedWishlist">
+                    Wishlist
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="completion">What is Your Current Completion of the Book?</label>
+                <br>
+                <label class="radio-inline">
+                    <input type="radio" id="read" name="completion">
+                    Read
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="reading" name="completion">
+                    Reading
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" id="toRead" name="completion">
+                    To Read
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="timesRead">Number of Times Read:</label>
+                <input type="number" class="form-control" id="timesRead" placeholder="Enter Number of Times Read" name="timesRead">
+              </div>
+
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+          </div>
         
     </body>
 </html> 

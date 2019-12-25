@@ -5,3 +5,13 @@
     background-attachment: fixed;
     background-size: cover;
 }
+.custom-table-header {
+    background-color: rgba(247, 243, 237, 0.9);
+}
+.custom-table-body {
+    background-color: rgba(247, 243, 237, 0.5);
+}
+.custom-form-background {
+    background-color: rgba(247, 243, 237, 0.6);
+    padding-bottom: 15px;
+}
