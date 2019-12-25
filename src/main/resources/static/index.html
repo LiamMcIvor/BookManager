@@ -7,7 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>   </head>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
     <body class="body-book">
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
@@ -27,18 +28,23 @@
                     </ul>
                 </div>
             </div>
+            <button onclick="getBooks()">book</button>
         </nav>
         <div class="container">
 
-            <table class="table table-hover">
+            <table id="bookTable" class="table table-hover">
               <thead class="custom-table-header">
                 <tr>
-                  <th>Firstname</th>
-                  <th>Lastname</th>
-                  <th>Email</th>
+                  <th>Title</th>
+                  <th>Author(s)</th>
+                  <th>ISBN</th>
+                  <th>Series</th>
+                  <th>Owned/Wishlist</th>
+                  <th>Completion</th>
+                  <th>Times Read</th>
                 </tr>
               </thead>
-              <tbody class="custom-table-body">
+              <tbody id="bookTableBody" class="custom-table-body">
                 <tr>
                   <td>John</td>
                   <td>Doe</td>
@@ -57,5 +63,7 @@
               </tbody>
             </table>
           </div>
+          <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+          <script src="./scripts.js"></script>
     </body>
 </html> 
