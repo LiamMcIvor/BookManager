@@ -2,11 +2,26 @@
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
 
+function addBook() {
+    axios.post("http://localhost:8080/book/createBook",
+    {
+    authors : [{penName : "Terry Pratchett"}, {penName : "Neil Gaiman"}],
+    title : "Good Omens",
+    isbn : "1234567890",
+    series : "N/A",
+    timesRead : 0,
+    owned : "WISHLIST",
+    completion : "TO_READ"})
+    .then((response) => {
+        console.log(response);
+    }).catch((error) => {
+        console.error(error);
+    });
+}
 
 function getBooks() {
     axios.get("http://localhost:8080/book/getAll")
     .then((response) => {
-        console.log(response)
         constructTableBody(response.data);
     }).catch((error) => {
         console.error(error);
