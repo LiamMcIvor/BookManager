@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Author {
 
@@ -16,6 +18,7 @@ public class Author {
 	private Long authorId;
 
 	@ManyToMany(mappedBy = "authors")
+	@JsonIgnore
 	private Set<Book> books;
 
 	private String penName;

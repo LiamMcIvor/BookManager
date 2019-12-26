@@ -2,7 +2,18 @@
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
 
-function addRow(book, authorList) {
+
+function getBooks() {
+    axios.get("http://localhost:8080/book/getAll")
+    .then((response) => {
+        console.log(response)
+        constructTableBody(response.data);
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+function addRow(book) {
     let row = document.createElement("tr");
 
     let titleCell = document.createElement("td");
@@ -10,11 +21,12 @@ function addRow(book, authorList) {
     row.appendChild(titleCell);
 
     let authorsCell = document.createElement("td");
-    let authors;
-    for (author of authorList) {
-        authors += author.penName + ", ";
+    let authorsString = "";
+    for (let author of book.authors) {
+        authorsString += author.penName + ", ";
     }
-    authorsCell.innerHTML = authors;
+    authorsString = authorsString.replace(/,\s*$/, "");
+    authorsCell.innerHTML = authorsString;
     row.appendChild(authorsCell);
 
     let isbnCell = document.createElement("td");
@@ -40,19 +52,11 @@ function addRow(book, authorList) {
     tableBody.appendChild(row);
 }
 
-function constructTableBody() {
+function constructTableBody(bookList) {
     clearTableBody();
-
-
-}
-
-function getBooks() {
-    axios.get("http://localhost:8080/book/getAll")
-    .then((response) => {
-        console.log(response);
-    }).catch((error) => {
-        console.error(error);
-    });
+    for (let book of bookList) {
+        addRow(book);
+    }
 }
 
 function clearTableBody() {
