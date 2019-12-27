@@ -2,6 +2,7 @@ package com.bae.manager.persistence.domain;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Author {
 	@JsonIgnore
 	private Set<Book> books;
 
+	@Column(unique = true)
 	private String penName;
 	
 	

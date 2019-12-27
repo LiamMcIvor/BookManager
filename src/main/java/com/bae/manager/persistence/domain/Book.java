@@ -120,9 +120,7 @@ public class Book {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((authors == null) ? 0 : authors.hashCode());
-		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
-		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
+		result = prime * result + ((series == null) ? 0 : series.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -136,15 +134,10 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (bookId == null) {
-			if (other.bookId != null)
+		if (series == null) {
+			if (other.series != null)
 				return false;
-		} else if (!bookId.equals(other.bookId))
-			return false;
-		if (isbn == null) {
-			if (other.isbn != null)
-				return false;
-		} else if (!isbn.equals(other.isbn))
+		} else if (!series.equals(other.series))
 			return false;
 		if (title == null) {
 			if (other.title != null)
@@ -153,5 +146,6 @@ public class Book {
 			return false;
 		return true;
 	}
+
 
 }
