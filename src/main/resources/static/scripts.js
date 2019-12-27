@@ -1,8 +1,30 @@
 "use strict"
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
+const form = document.getElementById("addBookForm");
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2({
+    //$('#authors').select2({
+        placeholder: "Select Author(s)",
+        tags: true
+    });
+});
 
-function addBook() {
+const bookFormSubmit = event => {
+    event.preventDefault();
+    const data = formToJSON(form.elements);
+    const bookData = document.getElementsByClassName("form-group")[0];
+    bookData.textContent = JSON.stringify(data, null, " ");
+}
+
+form.addEventListener("submit", bookFormSubmit);
+
+const formToJSON = elements => [].reduce.call(elements, (data, element) => {
+    data[element.name] = element.value;
+    return data;
+}, {});
+
+function addBook(book) {
     axios.post("http://localhost:8080/book/createBook",
     {
     authors : [{penName : "Terry Pratchett"}, {penName : "Neil Gaiman"}],
