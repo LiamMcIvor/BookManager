@@ -33,15 +33,15 @@
         </nav>
         <div class="container custom-form-background">
             <h2>Add a Book</h2>
-            <form id="addBookForm">
+            <form id="addBookForm" name="addBookForm">
               <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" class="form-control" id="title" placeholder="Enter Book Title" name="title">
+                <label for="titleField">Title:</label>
+                <input type="text" class="form-control" id="titleField" placeholder="Enter Book Title" name="title">
               </div>
               <div id="FormMultiSelect" class="form-group">
                 <label for="authors">Select Author(s):</label>
-                <select class="js-example-basic-multiple form-control" id="authors" name="authors[]" multiple="multiple">
-                    <option value="Terry Prachett">Terry Prachett</option>
+                <select class="js-example-basic-multiple form-control" id="authors" name="authors[penName]" multiple="multiple">
+                    <option value="Terry Prachett">Terry Pratchett</option>
                     <option value="Neil Gaiman">Neil Gaiman</option>
                 </select>
               </div>
@@ -57,11 +57,11 @@
                 <label for="owned">Is the Book Owned or on Your Wishlist?</label>
                 <br>
                 <label class="radio-inline">
-                    <input type="radio" id="owned" name="owned">
+                    <input type="radio" value="OWNED" id="owned" name="owned">
                     Owned
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" id="wishlist" name="owned">
+                    <input type="radio" value="WISHLIST" id="wishlist" name="owned">
                     Wishlist
                 </label>
               </div>
@@ -69,15 +69,15 @@
                 <label for="completion">What is Your Current Completion of the Book?</label>
                 <br>
                 <label class="radio-inline">
-                    <input type="radio" id="read" name="completion">
+                    <input type="radio" value="READ" id="read" name="completion">
                     Read
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" id="reading" name="completion">
+                    <input type="radio" value="READING" id="reading" name="completion">
                     Reading
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" id="toRead" name="completion">
+                    <input type="radio" value="TO_READ" id="toRead" name="completion">
                     To Read
                 </label>
               </div>

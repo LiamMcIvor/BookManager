@@ -2,39 +2,85 @@
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
 const form = document.getElementById("addBookForm");
+let authorList;
+
 $(document).ready(function() {
     $('.js-example-basic-multiple').select2({
-    //$('#authors').select2({
         placeholder: "Select Author(s)",
-        tags: true
+        tags: true,
+        maximumSelectionSize: 10
     });
 });
 
-const bookFormSubmit = event => {
+$("form").submit(function(event) {
     event.preventDefault();
-    const data = formToJSON(form.elements);
-    const bookData = document.getElementsByClassName("form-group")[0];
-    bookData.textContent = JSON.stringify(data, null, " ");
+    let formData = $(this).serializeObject();
+    addBook(formData);
+});
+
+function serializeLogic(value, name, object) {
+    if (object[name]) {
+        if (!object[name].push) {
+            object[name] = [object[name]];
+        }
+        object[name].push(value);
+    } else {
+        object[name] = value;
+    }
 }
 
-form.addEventListener("submit", bookFormSubmit);
+$.fn.serializeObject = function() {
+    var serializedObject = {};
+    var serializedArray = this.serializeArray();
+    $.each(serializedArray, function() {
+        if (this.name.indexOf("[") != -1) {
+            let adjustedString = this.name.replace(/]/g, "").split("[");
+            let obj = {};
+            obj[adjustedString[1]] = this.value || "";
+            serializeLogic(obj, adjustedString[0], serializedObject)
+        }
+        else {
+            serializeLogic(this.value || "", this.name, serializedObject);
+        }
+    });
+    return serializedObject;
+};
 
-const formToJSON = elements => [].reduce.call(elements, (data, element) => {
-    data[element.name] = element.value;
-    return data;
-}, {});
+function authorExists(checkedAuthor, allAuthors) {
+    for (author of allAuthors) {
+        if (author.penName === checkedAuthor) {
+            return true;
+        };
+    };
+    return false;
+}
+
+function getAllAuthors() {
+    axios.get("http://localhost8080/author/getAll")
+    .then((response) => {
+        authorList = response.data;
+    }).catch((error) => {
+        console.error(error)
+    });
+}
+
+function createTestBook() {
+    let book = {
+        authors : [{penName : "Terry Pratchett"}, {penName : "Neil Gaiman"}],
+        title : "Good Omens",
+        isbn : "1234567890",
+        series : "N/A",
+        timesRead : 0,
+        owned : "WISHLIST",
+        completion : "TO_READ"};
+    addBook(book);
+}
+const config = {headers: {'Content-Type': 'application/json'}};
 
 function addBook(book) {
-    axios.post("http://localhost:8080/book/createBook",
-    {
-    authors : [{penName : "Terry Pratchett"}, {penName : "Neil Gaiman"}],
-    title : "Good Omens",
-    isbn : "1234567890",
-    series : "N/A",
-    timesRead : 0,
-    owned : "WISHLIST",
-    completion : "TO_READ"})
-    .then((response) => {
+    console.log(book);
+    axios.post("http://localhost:8080/book/createBook", book, config)
+        .then((response) => {
         console.log(response);
     }).catch((error) => {
         console.error(error);
