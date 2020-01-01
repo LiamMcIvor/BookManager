@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.bae.manager.exception.DuplicateValueException;
 import com.bae.manager.exception.EntryNotFoundException;
 import com.bae.manager.exception.InvalidEntryException;
+import com.bae.manager.persistence.domain.Author;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
 
@@ -17,11 +18,14 @@ import com.bae.manager.persistence.repo.BookRepo;
 public class BookService {
 
 	private BookRepo repo;
+	
+	private AuthorService authorService;
 
 	@Autowired
-	public BookService(BookRepo repo) {
+	public BookService(BookRepo repo, AuthorService authorService) {
 		super();
 		this.repo = repo;
+		this.authorService = authorService;
 	}
 
 	public Book createBook(Book book) {
@@ -78,6 +82,14 @@ public class BookService {
 		}
 		this.repo.deleteById(id);
 		return this.repo.existsById(id);
+	}
+
+	public Book addAuthorToBook(long id, Author author) {
+		Book toUpdate = this.findBookById(id);
+		Author newAuthor = this.authorService.createAuthor(author);
+		toUpdate.getAuthors().add(author);
+		
+		return this.repo.saveAndFlush(toUpdate);
 	}
 	
 

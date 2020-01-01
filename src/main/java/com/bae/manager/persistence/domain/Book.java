@@ -1,6 +1,9 @@
 package com.bae.manager.persistence.domain;
 
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -36,7 +39,7 @@ public class Book {
 		super();
 	}
 
-	public Book(String title, String isbn, String series, int timesRead, Owned owned, Completion completion) {
+	public Book(String title, String isbn, String series, int timesRead, Owned owned, Completion completion, Author...authors) {
 		super();
 		this.title = title;
 		this.isbn = isbn;
@@ -44,6 +47,7 @@ public class Book {
 		this.timesRead = timesRead;
 		this.owned = owned;
 		this.completion = completion;
+		this.authors = Stream.of(authors).collect(Collectors.toSet());
 	}
 
 	public Long getId() {

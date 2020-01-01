@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +37,9 @@ public class BookUnitTests {
 	@Mock
 	private BookRepo repo;
 	
+	@Mock
+	private AuthorService authorService;
+	
 	private List<Book> bookList;
 	
 	private Book testBook;
@@ -57,6 +59,8 @@ public class BookUnitTests {
 
 	private Author testAuthor;
 
+	private Author testAuthorWithId;
+
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
@@ -71,6 +75,8 @@ public class BookUnitTests {
 		this.testBookFailWithId.setId(id);
 		this.invalidId = 2L;
 		this.testAuthor = new Author("Terry Pratchett");
+		this.testAuthorWithId = new Author(testAuthor.getPenName());
+		this.testAuthorWithId.setId(this.id);
 	}
 
 	@Test
@@ -82,10 +88,9 @@ public class BookUnitTests {
 	
 	@Test
 	public void duplicateBookTest() {
+		testBookFail.setTitle("The Color of Magik");
 		when(this.repo.findAll()).thenReturn(this.bookList);
 		assertTrue(this.service.findRepeatedBook(this.testBook));
-		System.out.println(this.testBook);
-		System.out.println(this.testBookFail);
 		assertFalse(this.service.findRepeatedBook(this.testBookFail));
 		verify(this.repo, times(2)).findAll();
 		}
@@ -191,7 +196,7 @@ public class BookUnitTests {
 		
 		when(this.repo.saveAndFlush(this.testBookWithId)).thenReturn(this.testBookWithId);
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
-
+		when(this.authorService.createAuthor(testAuthor)).thenReturn(testAuthorWithId);
 		
 		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.testAuthor));
 		verify(this.repo, times(1)).findById(this.id);
