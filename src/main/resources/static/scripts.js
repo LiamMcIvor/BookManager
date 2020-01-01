@@ -2,6 +2,7 @@
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
 const form = document.getElementById("addBookForm");
+let everyAuthor = [];
 
 
 $(document).ready(function() {
@@ -18,16 +19,38 @@ $(document).ready(function() {
 $("form").submit(function(event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
-    addBook(formData);
+    let repeatedAuthors = [];
+    for (let checkedAuthor in formData.authors) {
+        console.log(formData.authors);
+        console.log(everyAuthor);
+
+        for (let author of everyAuthor) {
+            console.log(everyAuthor[author].penName);
+            console.log(formData.authors[checkedAuthor].penName);
+
+            if (author.penName === formData.authors[checkedAuthor].penName) {
+                formData.authors.splice(checkedAuthor, 1);
+                repeatedAuthors.push(author);
+            }
+        }
+    }
+    console.log(repeatedAuthors);
+    addBook(formData, repeatedAuthors);
 });
 
-function serializeLogic(value, name, object) {
+
+function serializeLogic(value, name, object, arrayField) {
     if (object[name]) {
         if (!object[name].push) {
             object[name] = [object[name]];
         }
         object[name].push(value);
-    } else {
+    } 
+    else if (arrayField) {
+        object[name] = [];
+        object[name].push(value);
+    }
+    else {
         object[name] = value;
     }
 }
@@ -40,10 +63,10 @@ $.fn.serializeObject = function() {
             let adjustedString = this.name.replace(/]/g, "").split("[");
             let obj = {};
             obj[adjustedString[1]] = this.value || "";
-            serializeLogic(obj, adjustedString[0], serializedObject)
+            serializeLogic(obj, adjustedString[0], serializedObject, true)
         }
         else {
-            serializeLogic(this.value || "", this.name, serializedObject);
+            serializeLogic(this.value || "", this.name, serializedObject, false);
         }
     });
     return serializedObject;
@@ -79,6 +102,7 @@ function getAuthorsForSelect() {
 }
 
 function populateAuthorsSelect(authorList) {
+    everyAuthor = authorList;
     for (let author of authorList) {
         let optionValue = author.penName;
         let newOption = new Option(optionValue, optionValue, false, false);
@@ -99,15 +123,20 @@ function createTestBook() {
 }
 const config = {headers: {'Content-Type': 'application/json'}};
 
-function addBook(book) {
+function addBook(book, repeatedAuthors) {
     console.log(book);
     axios.post("http://localhost:8080/book/createBook", book, config)
         .then((response) => {
-        console.log(response);
+        appendRepeatedAuthors(response.data.id);
     }).catch((error) => {
         console.error(error);
     });
 }
+
+function appendRepeatedAuthors(authorList) {
+    axios.post
+}
+
 
 function getBooks() {
     axios.get("http://localhost:8080/book/getAll")
