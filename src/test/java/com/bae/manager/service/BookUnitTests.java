@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ import com.bae.manager.enums.Owned;
 import com.bae.manager.exception.DuplicateValueException;
 import com.bae.manager.exception.EntryNotFoundException;
 import com.bae.manager.exception.InvalidEntryException;
+import com.bae.manager.persistence.domain.Author;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
 
@@ -53,6 +55,8 @@ public class BookUnitTests {
 	
 	private Book testBookFailWithId;
 
+	private Author testAuthor;
+
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
@@ -66,6 +70,7 @@ public class BookUnitTests {
 		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getIsbn(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
 		this.testBookFailWithId.setId(id);
 		this.invalidId = 2L;
+		this.testAuthor = new Author("Terry Pratchett");
 	}
 
 	@Test
@@ -180,5 +185,18 @@ public class BookUnitTests {
 		verify(this.repo, times(1)).findById(this.id);
 	}
 	
+	@Test
+	public void addAuthorToBookTest() {
+		this.testBookWithId.getAuthors().add(this.testAuthor);
+		
+		when(this.repo.saveAndFlush(this.testBookWithId)).thenReturn(this.testBookWithId);
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+
+		
+		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.testAuthor));
+		verify(this.repo, times(1)).findById(this.id);
+		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
+
+	}
 
 }
