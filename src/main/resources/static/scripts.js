@@ -2,15 +2,18 @@
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
 const form = document.getElementById("addBookForm");
-let authorList;
+
 
 $(document).ready(function() {
     $('.js-example-basic-multiple').select2({
         placeholder: "Select Author(s)",
         tags: true,
-        maximumSelectionSize: 10
+        maximumSelectionSize: 10,
     });
+    getAuthorsForSelect();
 });
+
+
 
 $("form").submit(function(event) {
     event.preventDefault();
@@ -56,12 +59,31 @@ function authorExists(checkedAuthor, allAuthors) {
 }
 
 function getAllAuthors() {
-    axios.get("http://localhost8080/author/getAll")
+    let authorList = {};
+    axios.get("http://localhost:8080/author/getAll")
     .then((response) => {
-        authorList = response.data;
+        authorList["authors"] = response.data;
     }).catch((error) => {
-        console.error(error)
+        console.error(error);
     });
+    return authorList;
+}
+
+function getAuthorsForSelect() {
+    axios.get("http://localhost:8080/author/getAll")
+    .then((response) => {
+        populateAuthorsSelect(response.data);
+    }).catch((error) => {
+        console.error(error);
+    });
+}
+
+function populateAuthorsSelect(authorList) {
+    for (let author of authorList) {
+        let optionValue = author.penName;
+        let newOption = new Option(optionValue, optionValue, false, false);
+        $("#authors").append(newOption).trigger("change");
+    }
 }
 
 function createTestBook() {
