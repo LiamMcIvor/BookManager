@@ -60,10 +60,13 @@ public class BookUnitTests {
 	private Author testAuthor;
 
 	private Author testAuthorWithId;
+	
+	private List<Author> authorList;
 
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
+		this.authorList = new ArrayList<>();
 		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
 		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookWithId.setId(id);
@@ -77,6 +80,8 @@ public class BookUnitTests {
 		this.testAuthor = new Author("Terry Pratchett");
 		this.testAuthorWithId = new Author(testAuthor.getPenName());
 		this.testAuthorWithId.setId(this.id);
+		this.authorList.add(testAuthor);
+
 	}
 
 	@Test
@@ -198,7 +203,7 @@ public class BookUnitTests {
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
 		when(this.authorService.createAuthor(testAuthor)).thenReturn(testAuthorWithId);
 		
-		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.testAuthor));
+		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.authorList));
 		verify(this.repo, times(1)).findById(this.id);
 		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
 

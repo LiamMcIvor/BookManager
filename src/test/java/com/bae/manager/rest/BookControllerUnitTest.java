@@ -17,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
+import com.bae.manager.persistence.domain.Author;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.service.BookService;
 
@@ -36,6 +37,12 @@ public class BookControllerUnitTest {
 	private Book testBookWithId;
 	
 	private final long id = 1;
+
+	private Author testAuthor;
+
+	private Author testAuthorWithId;
+
+	private List<Author> authorList;
 	
 	@Before
 	public void init() {
@@ -44,6 +51,10 @@ public class BookControllerUnitTest {
 		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookWithId.setId(id);
 		this.bookList.add(testBook);
+		this.testAuthor = new Author("Terry Pratchett");
+		this.testAuthorWithId = new Author(testAuthor.getPenName());
+		this.testAuthorWithId.setId(this.id);
+		this.authorList.add(testAuthor);
 	}
 	
 	@Test
@@ -81,6 +92,17 @@ public class BookControllerUnitTest {
 		when(this.service.updateBook(newBook, this.id)).thenReturn(updatedBook);
 		assertEquals(updatedBook, this.controller.updateBook(newBook, this.id));
 		verify(this.service, times(1)).updateBook(newBook, this.id);
+	}
+	
+	@Test
+	public void addAuthorToBookTest() {
+		this.testBookWithId.getAuthors().addAll(authorList);
+		
+		when(this.service.addAuthorToBook(this.id, this.authorList)).thenReturn(this.testBookWithId);
+		
+		assertEquals(this.testBook, this.controller.addAuthorToBook(this.id, this.authorList));
+		verify(this.service, times(1)).addAuthorToBook(this.id, this.authorList);
+		
 	}
 
 }

@@ -3,6 +3,8 @@ package com.bae.manager.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -84,10 +86,12 @@ public class BookService {
 		return this.repo.existsById(id);
 	}
 
-	public Book addAuthorToBook(long id, Author author) {
+	public Book addAuthorToBook(long id, Collection<Author> authors) {
 		Book toUpdate = this.findBookById(id);
-		Author newAuthor = this.authorService.createAuthor(author);
-		toUpdate.getAuthors().add(author);
+		for (Author author : authors) {
+			Author newAuthor = this.authorService.createAuthor(author);
+		}
+		toUpdate.getAuthors().addAll((authors));
 		
 		return this.repo.saveAndFlush(toUpdate);
 	}
