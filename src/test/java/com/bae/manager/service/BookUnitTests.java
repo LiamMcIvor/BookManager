@@ -201,7 +201,6 @@ public class BookUnitTests {
 		
 		when(this.repo.saveAndFlush(this.testBookWithId)).thenReturn(this.testBookWithId);
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
-		when(this.authorService.createAuthor(testAuthor)).thenReturn(testAuthorWithId);
 		
 		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.authorList));
 		verify(this.repo, times(1)).findById(this.id);

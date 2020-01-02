@@ -88,9 +88,7 @@ public class BookService {
 
 	public Book addAuthorToBook(long id, Collection<Author> authors) {
 		Book toUpdate = this.findBookById(id);
-		for (Author author : authors) {
-			Author newAuthor = this.authorService.createAuthor(author);
-		}
+
 		toUpdate.getAuthors().addAll((authors));
 		
 		return this.repo.saveAndFlush(toUpdate);
