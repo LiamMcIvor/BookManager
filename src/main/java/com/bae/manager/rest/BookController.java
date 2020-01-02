@@ -1,5 +1,6 @@
 package com.bae.manager.rest;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.websocket.server.PathParam;
@@ -7,6 +8,7 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bae.manager.persistence.domain.Author;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.service.BookService;
 
@@ -49,9 +52,14 @@ public class BookController {
 		return this.service.deleteBook(id);
 	}
 
-	@PutMapping("updateBook")
+	@PutMapping("/updateBook")
 	public Book updateBook(@RequestBody Book book, @PathParam("id") Long id) {
 		return this.service.updateBook(book, id);
+	}
+
+	@PatchMapping("/appendAuthor/{id}")
+	public Book addAuthorToBook(@PathVariable long id, @RequestBody Collection<Author> authors) {
+		return this.service.addAuthorToBook(id, authors);
 	}
 	
 }

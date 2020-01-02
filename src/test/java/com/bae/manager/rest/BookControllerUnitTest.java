@@ -47,6 +47,7 @@ public class BookControllerUnitTest {
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
+		this.authorList = new ArrayList<>();
 		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
 		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookWithId.setId(id);
