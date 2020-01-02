@@ -1,6 +1,5 @@
 package com.bae.manager.persistence.domain;
 
-import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -141,13 +140,17 @@ public class Book {
 		if (series == null) {
 			if (other.series != null)
 				return false;
-		} else if (!series.equals(other.series))
+		}
+		else if (!series.equals(other.series)) {
 			return false;
+		}
 		if (title == null) {
 			if (other.title != null)
 				return false;
-		} else if (!title.equals(other.title))
+		}
+		else if (!title.equals(other.title)) {
 			return false;
+		}
 		return true;
 	}
 

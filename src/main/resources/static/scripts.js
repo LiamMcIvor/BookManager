@@ -20,21 +20,26 @@ $("form").submit(function(event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
     let repeatedAuthors = [];
-    for (let checkedAuthor in formData.authors) {
-        console.log(formData.authors);
-        console.log(everyAuthor);
-
-        for (let author of everyAuthor) {
-            console.log(everyAuthor[author].penName);
-            console.log(formData.authors[checkedAuthor].penName);
-
-            if (author.penName === formData.authors[checkedAuthor].penName) {
-                formData.authors.splice(checkedAuthor, 1);
-                repeatedAuthors.push(author);
+    if (!jQuery.isEmptyObject(formData.authors)) {
+        if (formData.authors.length > 1) {
+            for (let checkedAuthor in formData.authors) {
+                for (let author of everyAuthor) {
+                    if (author.penName === formData.authors[checkedAuthor].penName) {
+                        formData.authors.splice(checkedAuthor, 1);
+                        repeatedAuthors.push(author);
+                    }
+                }
+            }
+        }
+        else {
+            for (let author of everyAuthor) {
+                if (author.penName === formData.authors.penName) {
+                    formData.authors.splice(checkedAuthor, 1);
+                    repeatedAuthors.push(author);
+                }
             }
         }
     }
-    console.log(repeatedAuthors);
     addBook(formData, repeatedAuthors);
 });
 
@@ -127,14 +132,20 @@ function addBook(book, repeatedAuthors) {
     console.log(book);
     axios.post("http://localhost:8080/book/createBook", book, config)
         .then((response) => {
-        appendRepeatedAuthors(response.data.id);
+            appendRepeatedAuthors(response.data.id, repeatedAuthors);
     }).catch((error) => {
         console.error(error);
     });
 }
 
-function appendRepeatedAuthors(authorList) {
-    axios.post
+function appendRepeatedAuthors(id, authorList) {
+    let appendUrl = `http://localhost:8080/book/appendAuthor/${id}`;
+    axios.patch(appendUrl, authorList)
+        .then((response) => {
+            console.log(response);
+    }).catch((error) => {
+            console.error(error);
+    });
 }
 
 

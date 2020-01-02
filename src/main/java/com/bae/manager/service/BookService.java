@@ -3,7 +3,6 @@ package com.bae.manager.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,13 +20,10 @@ public class BookService {
 
 	private BookRepo repo;
 	
-	private AuthorService authorService;
-
 	@Autowired
-	public BookService(BookRepo repo, AuthorService authorService) {
+	public BookService(BookRepo repo) {
 		super();
 		this.repo = repo;
-		this.authorService = authorService;
 	}
 
 	public Book createBook(Book book) {

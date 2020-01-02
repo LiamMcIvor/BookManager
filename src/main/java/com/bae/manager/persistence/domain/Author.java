@@ -86,8 +86,10 @@ public class Author {
 		if (penName == null) {
 			if (other.penName != null)
 				return false;
-		} else if (!penName.equals(other.penName))
+		}
+		else if (!penName.equals(other.penName)) {
 			return false;
+		}
 		return true;
 	}
 
