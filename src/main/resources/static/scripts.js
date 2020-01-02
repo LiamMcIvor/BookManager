@@ -1,4 +1,5 @@
 "use strict"
+const tableContainer = document.getElementById("bookTableContainer");
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
 const form = document.getElementById("addBookForm");
@@ -6,12 +7,16 @@ let everyAuthor = [];
 
 
 $(document).ready(function() {
+    await.getBooks();
     $('.js-example-basic-multiple').select2({
         placeholder: "Select Author(s)",
         tags: true,
         maximumSelectionSize: 10,
     });
     getAuthorsForSelect();
+    $("tr").click(function() {
+        console.log("hello");
+    });
 });
 
 
@@ -199,9 +204,24 @@ function addRow(book) {
 
 function constructTableBody(bookList) {
     clearTableBody();
-    for (let book of bookList) {
-        addRow(book);
+    if (!jQuery.isEmptyObject(bookList)) {
+        for (let book of bookList) {
+            addRow(book);
+        }
+        $("#bookTable").toggle();
     }
+    else {
+        let message = document.createElement("h3");
+        message.innerHTML = "There Are Currently No Saved Books";
+        message.classList.add("blank-table-background");
+        tableContainer.appendChild(message);
+    }
+}
+
+
+
+function test() {
+    console.log("hello")
 }
 
 function clearTableBody() {
