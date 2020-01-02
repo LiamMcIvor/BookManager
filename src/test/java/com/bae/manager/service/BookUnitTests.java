@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
@@ -28,7 +28,7 @@ import com.bae.manager.persistence.domain.Author;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class BookUnitTests {
 	
 	@InjectMocks
