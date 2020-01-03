@@ -6,25 +6,30 @@ const form = document.getElementById("addBookForm");
 let everyAuthor = [];
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('.js-example-basic-multiple').select2({
         placeholder: "Select Author(s)",
         tags: true,
         maximumSelectionSize: 10,
     });
     getAuthorsForSelect();
-    $("#bookTableBody").on("click", "tr", function() {
+    $("#bookTableBody").on("click", "tr", function () {
         let id = $(this).attr("id");
         getBookForUpdate(id);
         $("#bookTable").toggle();
         $("#formContainer").toggle();
+        $('.js-example-basic-multiple').select2({
+            placeholder: "Select Author(s)",
+            tags: true,
+            maximumSelectionSize: 10,
+        });
         console.log(typeof id + id);
     });
 });
 
 
 
-$("form").submit(function(event) {
+$("form").submit(function (event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
     let repeatedAuthors = [];
@@ -58,7 +63,7 @@ function serializeLogic(value, name, object, arrayField) {
             object[name] = [object[name]];
         }
         object[name].push(value);
-    } 
+    }
     else if (arrayField) {
         object[name] = [];
         object[name].push(value);
@@ -68,10 +73,10 @@ function serializeLogic(value, name, object, arrayField) {
     }
 }
 
-$.fn.serializeObject = function() {
+$.fn.serializeObject = function () {
     var serializedObject = {};
     var serializedArray = this.serializeArray();
-    $.each(serializedArray, function() {
+    $.each(serializedArray, function () {
         if (this.name.indexOf("[") != -1) {
             let adjustedString = this.name.replace(/]/g, "").split("[");
             let obj = {};
@@ -97,24 +102,25 @@ function authorExists(checkedAuthor, allAuthors) {
 function getAllAuthors() {
     let authorList = {};
     axios.get("http://localhost:8080/author/getAll")
-    .then((response) => {
-        authorList["authors"] = response.data;
-    }).catch((error) => {
-        console.error(error);
-    });
+        .then((response) => {
+            authorList["authors"] = response.data;
+        }).catch((error) => {
+            console.error(error);
+        });
     return authorList;
 }
 
 function getAuthorsForSelect() {
     axios.get("http://localhost:8080/author/getAll")
-    .then((response) => {
-        populateAuthorsSelect(response.data);
-    }).catch((error) => {
-        console.error(error);
-    });
+        .then((response) => {
+            populateAuthorsSelect(response.data);
+        }).catch((error) => {
+            console.error(error);
+        });
 }
 
 function populateAuthorsSelect(authorList) {
+    $("#authors").empty();
     everyAuthor = authorList;
     for (let author of authorList) {
         let optionValue = author.penName;
@@ -125,25 +131,26 @@ function populateAuthorsSelect(authorList) {
 
 function createTestBook() {
     let book = {
-        authors : [{penName : "Terry Pratchett"}, {penName : "Neil Gaiman"}],
-        title : "Good Omens",
-        isbn : "1234567890",
-        series : "N/A",
-        timesRead : 0,
-        owned : "WISHLIST",
-        completion : "TO_READ"};
+        authors: [{ penName: "Terry Pratchett" }, { penName: "Neil Gaiman" }],
+        title: "Good Omens",
+        isbn: "1234567890",
+        series: "N/A",
+        timesRead: 0,
+        owned: "WISHLIST",
+        completion: "TO_READ"
+    };
     addBook(book);
 }
-const config = {headers: {'Content-Type': 'application/json'}};
+const config = { headers: { 'Content-Type': 'application/json' } };
 
 function addBook(book, repeatedAuthors) {
     console.log(book);
     axios.post("http://localhost:8080/book/createBook", book, config)
         .then((response) => {
             appendRepeatedAuthors(response.data.id, repeatedAuthors);
-    }).catch((error) => {
-        console.error(error);
-    });
+        }).catch((error) => {
+            console.error(error);
+        });
 }
 
 function appendRepeatedAuthors(id, authorList) {
@@ -151,28 +158,29 @@ function appendRepeatedAuthors(id, authorList) {
     axios.patch(appendUrl, authorList)
         .then((response) => {
             console.log(response);
-    }).catch((error) => {
+        }).catch((error) => {
             console.error(error);
-    });
+        });
 }
 
 function getBookForUpdate(id) {
     let getOneUrl = `http://localhost:8080/book/get/${id}`
     axios.get(getOneUrl)
-    .then((response) => {
-        prepopulateForm(response.data);
-    }).catch((error) => {
-        console.error(error);
-    });
+        .then((response) => {
+            console.log(response.data);
+            prepopulateForm(response.data);
+        }).catch((error) => {
+            console.error(error);
+        });
 }
 
 function getBooks(clickable) {
     axios.get("http://localhost:8080/book/getAll")
-    .then((response) => {
-        constructTableBody(response.data, clickable);
-    }).catch((error) => {
-        console.error(error);
-    });
+        .then((response) => {
+            constructTableBody(response.data, clickable);
+        }).catch((error) => {
+            console.error(error);
+        });
 }
 
 function addRow(book, clickable) {
@@ -232,9 +240,33 @@ function constructTableBody(bookList, clickable) {
 }
 
 function prepopulateForm(bookData) {
-    $.each(bookData, function(key, value) {
-        let formField = $(`[name=${key}]`, form);
-        console.log(formField.prop("type"));
+    $.each(bookData, function (key, value) {
+        let formField;
+        if (key === "authors") {
+            let selectedAuthors = [];
+            formField = $("#authors", form);
+            for (let author of bookData.authors) {
+                selectedAuthors.push(author.penName);
+            }                
+            formField.val(selectedAuthors);
+            formField.trigger("change");
+        }
+        else {
+            formField = $(`[name=${key}]`, form);
+            switch (formField.prop("type")) {
+                case "radio":
+                    formField.each(function () {
+                        if ($(this).attr("value") === value) {
+                            $(this).attr("checked", value);
+                        };
+                    });
+                    break;
+                default:
+                    formField.val(value);
+            }
+        };
+        console.log(formField.prop("type") + key);
+
     })
 
 }
