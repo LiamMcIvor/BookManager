@@ -2,7 +2,8 @@
 const tableContainer = document.getElementById("bookTableContainer");
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
-const form = document.getElementById("addBookForm");
+const createForm = document.getElementById("addBookForm");
+const updateForm = document.getElementById("updateBookForm")
 let everyAuthor = [];
 
 
@@ -29,7 +30,7 @@ $(document).ready(function () {
 
 
 
-$("form").submit(function (event) {
+$("#createForm").submit(function(event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
     let repeatedAuthors = [];
@@ -55,6 +56,13 @@ $("form").submit(function (event) {
     }
     addBook(formData, repeatedAuthors);
 });
+
+updateForm.submit(function(event) {
+    event.preventDefault();
+    let formData = $(this).serializeObject();
+    let newAuthors = [];
+
+})
 
 
 function serializeLogic(value, name, object, arrayField) {
@@ -153,6 +161,11 @@ function addBook(book, repeatedAuthors) {
         });
 }
 
+function updateBook(book, newAuthors, id) {
+    let updateUrl = `http://localhost:8080/book/updateBook/${id}`;
+    axios.put(updateUrl, book)
+}
+
 function appendRepeatedAuthors(id, authorList) {
     let appendUrl = `http://localhost:8080/book/appendAuthor/${id}`;
     axios.patch(appendUrl, authorList)
@@ -244,7 +257,7 @@ function prepopulateForm(bookData) {
         let formField;
         if (key === "authors") {
             let selectedAuthors = [];
-            formField = $("#authors", form);
+            formField = $("#authors", updateForm);
             for (let author of bookData.authors) {
                 selectedAuthors.push(author.penName);
             }                
@@ -252,7 +265,7 @@ function prepopulateForm(bookData) {
             formField.trigger("change");
         }
         else {
-            formField = $(`[name=${key}]`, form);
+            formField = $(`[name=${key}]`, updateForm);
             switch (formField.prop("type")) {
                 case "radio":
                     formField.each(function () {
@@ -266,7 +279,6 @@ function prepopulateForm(bookData) {
             }
         };
         console.log(formField.prop("type") + key);
-
     })
 
 }

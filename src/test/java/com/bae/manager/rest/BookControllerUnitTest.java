@@ -105,5 +105,14 @@ public class BookControllerUnitTest {
 		verify(this.service, times(1)).addAuthorToBook(this.id, this.authorList);
 		
 	}
+	
+	@Test
+	public void updateBookAuthorsTest() {
+		this.testBookWithId.getAuthors().addAll(authorList);
+		
+		when(this.service.updateBookAuthors(this.id, this.authorList)).thenReturn(this.testBookWithId);
+		
+		assertEquals(this.testBook, this.controller.updateBookAuthors(this.id, this.authorList));
+		verify(this.service, times(1)).addAuthorToBook(this.id, this.authorList);	}
 
 }
