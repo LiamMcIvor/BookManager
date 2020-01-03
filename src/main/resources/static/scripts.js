@@ -7,14 +7,13 @@ let everyAuthor = [];
 
 
 $(document).ready(function() {
-    await.getBooks();
     $('.js-example-basic-multiple').select2({
         placeholder: "Select Author(s)",
         tags: true,
         maximumSelectionSize: 10,
     });
     getAuthorsForSelect();
-    $("tr").click(function() {
+    $("#bookTableBody").on("click", "tr", function() {
         console.log("hello");
     });
 });
@@ -154,16 +153,16 @@ function appendRepeatedAuthors(id, authorList) {
 }
 
 
-function getBooks() {
+function getBooks(clickable) {
     axios.get("http://localhost:8080/book/getAll")
     .then((response) => {
-        constructTableBody(response.data);
+        constructTableBody(response.data, clickable);
     }).catch((error) => {
         console.error(error);
     });
 }
 
-function addRow(book) {
+function addRow(book, clickable) {
     let row = document.createElement("tr");
 
     let titleCell = document.createElement("td");
@@ -202,11 +201,11 @@ function addRow(book) {
     tableBody.appendChild(row);
 }
 
-function constructTableBody(bookList) {
+function constructTableBody(bookList, clickable) {
     clearTableBody();
     if (!jQuery.isEmptyObject(bookList)) {
         for (let book of bookList) {
-            addRow(book);
+            addRow(book, clickable);
         }
         $("#bookTable").toggle();
     }
