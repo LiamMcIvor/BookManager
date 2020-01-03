@@ -61,6 +61,10 @@ public class BookUnitTests {
 
 	private Author testAuthorWithId;
 	
+	private Author testAuthor2;
+	
+	private Author testAuthor2WithId;
+	
 	private List<Author> authorList;
 
 	@Before
@@ -77,10 +81,15 @@ public class BookUnitTests {
 		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getIsbn(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
 		this.testBookFailWithId.setId(id);
 		this.invalidId = 2L;
+		
 		this.testAuthor = new Author("Terry Pratchett");
 		this.testAuthorWithId = new Author(testAuthor.getPenName());
 		this.testAuthorWithId.setId(this.id);
+		this.testAuthor2 = new Author("Neil Gaiman");
+		this.testAuthor2WithId = new Author(testAuthor2.getPenName());
+		this.testAuthor2WithId.setId(this.invalidId);
 		this.authorList.add(testAuthor);
+		this.authorList.add(testAuthor2);
 
 	}
 
@@ -206,6 +215,26 @@ public class BookUnitTests {
 		verify(this.repo, times(1)).findById(this.id);
 		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
 
+	}
+	
+	@Test
+	public void updateBookAuthors() {
+		this.testBookWithId.getAuthors().add(this.testAuthor);
+		this.testBookWithId.getAuthors().add(this.testAuthor2);
+		
+		when(this.repo.saveAndFlush(this.testBookWithId)).thenReturn(this.testBookWithId);
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+		when(this.authorService.findRepeatedAuthor(this.testAuthor)).thenReturn(false);
+		when(this.authorService.findRepeatedAuthor(this.testAuthor2)).thenReturn(true);
+		when(this.authorService.createAuthor(this.testAuthor)).thenReturn(this.testAuthorWithId);
+
+
+		assertEquals(this.testBookWithId, this.service.updateBookAuthors(this.id, this.authorList));
+		verify(this.repo, times(2)).findById(this.id);
+		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
+		verify(this.authorService, times(1)).findRepeatedAuthor(this.testAuthor);
+		verify(this.authorService, times(1)).findRepeatedAuthor(this.testAuthor2);
+		verify(this.authorService, times(1)).createAuthor(testAuthor);
 	}
 
 }

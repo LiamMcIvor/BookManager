@@ -7,5 +7,4 @@ import com.bae.manager.persistence.domain.Author;
 
 @Repository
 public interface AuthorRepo extends JpaRepository<Author, Long> {
-	
 }

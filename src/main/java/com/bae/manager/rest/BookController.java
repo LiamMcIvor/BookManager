@@ -3,8 +3,6 @@ package com.bae.manager.rest;
 import java.util.Collection;
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,13 +50,13 @@ public class BookController {
 		return this.service.deleteBook(id);
 	}
 
-	@PutMapping("/updateBook")
-	public Book updateBook(@RequestBody Book book, @PathParam("id") Long id) {
+	@PutMapping("/updateBook/{id}")
+	public Book updateBook(@RequestBody Book book, @PathVariable("id") Long id) {
 		return this.service.updateBook(book, id);
 	}
 
 	@PatchMapping("/appendAuthor/{id}")
-	public Book addAuthorToBook(@PathVariable long id, @RequestBody Collection<Author> authors) {
+	public Book addAuthorToBook(@PathVariable Long id, @RequestBody Collection<Author> authors) {
 		return this.service.addAuthorToBook(id, authors);
 	}
 	

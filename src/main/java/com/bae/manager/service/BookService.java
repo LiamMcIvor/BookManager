@@ -19,11 +19,14 @@ import com.bae.manager.persistence.repo.BookRepo;
 public class BookService {
 
 	private BookRepo repo;
+		
+	private AuthorService authorService;
 	
 	@Autowired
-	public BookService(BookRepo repo) {
+	public BookService(BookRepo repo, AuthorService authorService) {
 		super();
 		this.repo = repo;
+		this.authorService = authorService;
 	}
 
 	public Book createBook(Book book) {
@@ -90,5 +93,16 @@ public class BookService {
 		return this.repo.saveAndFlush(toUpdate);
 	}
 	
+	public Book updateBookAuthors(long id, Collection<Author> authors) {
+		Book toUpdate = this.findBookById(id);
+		toUpdate.getAuthors().clear();
+		
+		for(Author author : authors) {
+			if(!this.authorService.findRepeatedAuthor(author)) {
+				this.authorService.createAuthor(author);
+			}
+		}
+		return this.addAuthorToBook(id, authors);
+	}
 
 }
