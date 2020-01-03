@@ -14,7 +14,11 @@ $(document).ready(function() {
     });
     getAuthorsForSelect();
     $("#bookTableBody").on("click", "tr", function() {
-        console.log("hello");
+        let id = $(this).attr("id");
+        getBookForUpdate(id);
+        $("#bookTable").toggle();
+        $("#formContainer").toggle();
+        console.log(typeof id + id);
     });
 });
 
@@ -152,6 +156,15 @@ function appendRepeatedAuthors(id, authorList) {
     });
 }
 
+function getBookForUpdate(id) {
+    let getOneUrl = `http://localhost:8080/book/get/${id}`
+    axios.get(getOneUrl)
+    .then((response) => {
+        prepopulateForm(response.data);
+    }).catch((error) => {
+        console.error(error);
+    });
+}
 
 function getBooks(clickable) {
     axios.get("http://localhost:8080/book/getAll")
@@ -164,6 +177,7 @@ function getBooks(clickable) {
 
 function addRow(book, clickable) {
     let row = document.createElement("tr");
+    row.setAttribute("id", book.id);
 
     let titleCell = document.createElement("td");
     titleCell.innerHTML = book.title;
@@ -217,10 +231,12 @@ function constructTableBody(bookList, clickable) {
     }
 }
 
+function prepopulateForm(bookData) {
+    $.each(bookData, function(key, value) {
+        let formField = $(`[name=${key}]`, form);
+        console.log(formField.prop("type"));
+    })
 
-
-function test() {
-    console.log("hello")
 }
 
 function clearTableBody() {
