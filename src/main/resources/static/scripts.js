@@ -60,7 +60,8 @@ $("#createForm").submit(function(event) {
 updateForm.submit(function(event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
-    let newAuthors = [];
+    let updatedAuthors = [];
+    if (!jQuery.isEmptyObject(formData.authors)) {
 
 })
 

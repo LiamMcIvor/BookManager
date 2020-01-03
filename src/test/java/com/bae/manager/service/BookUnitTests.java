@@ -89,7 +89,7 @@ public class BookUnitTests {
 		this.testAuthor2WithId = new Author(testAuthor2.getPenName());
 		this.testAuthor2WithId.setId(this.invalidId);
 		this.authorList.add(testAuthor);
-		this.authorList.add(testAuthor2);
+		this.authorList.add(testAuthor2WithId);
 
 	}
 
@@ -219,8 +219,10 @@ public class BookUnitTests {
 	
 	@Test
 	public void updateBookAuthors() {
-		this.testBookWithId.getAuthors().add(this.testAuthor);
-		this.testBookWithId.getAuthors().add(this.testAuthor2);
+		this.testBook.setId(this.id);
+		this.testBook.getAuthors().add(this.testAuthor2WithId);
+		this.testBookWithId.getAuthors().add(this.testAuthorWithId);
+		this.testBookWithId.getAuthors().add(this.testAuthor2WithId);
 		
 		when(this.repo.saveAndFlush(this.testBookWithId)).thenReturn(this.testBookWithId);
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
