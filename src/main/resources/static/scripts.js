@@ -33,30 +33,8 @@ $(document).ready(function () {
 $("form", "#addFormContainer").submit(function (event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
-    //let repeatedAuthors = [];
-    /*if (!jQuery.isEmptyObject(formData.authors)) {
-        if (formData.authors.length > 1) {
-            for (let checkedAuthor in formData.authors) {
-                for (let author of everyAuthor) {
-                    if (author.penName === formData.authors[checkedAuthor].penName) {
-                        formData.authors.splice(checkedAuthor, 1);
-                        repeatedAuthors.push(author);
-                    }
-                }
-            }
-        }
-        else {
-            for (let author of everyAuthor) {
-                console.log(author.penName);
-                console.log(formData.authors.penName);
-                if (author.penName === formData.authors.penName) {
-                    formData.authors.splice(checkedAuthor, 1);
-                    repeatedAuthors.push(author);
-                }
-            }
-        }
-    }*/
-    let
+    let repeatedAuthors = arrayDataForSubmit(formData.authors, everyAuthor, "penName");
+    delete formData.authors;
     addBook(formData, repeatedAuthors);
 });
 
