@@ -33,8 +33,8 @@ $(document).ready(function () {
 $("form", "#addFormContainer").submit(function (event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
-    let repeatedAuthors = [];
-    if (!jQuery.isEmptyObject(formData.authors)) {
+    //let repeatedAuthors = [];
+    /*if (!jQuery.isEmptyObject(formData.authors)) {
         if (formData.authors.length > 1) {
             for (let checkedAuthor in formData.authors) {
                 for (let author of everyAuthor) {
@@ -55,36 +55,35 @@ $("form", "#addFormContainer").submit(function (event) {
                 }
             }
         }
-    }
+    }*/
+    let
     addBook(formData, repeatedAuthors);
 });
 
 $("form", "#updateFormContainer").submit(function (event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
-    let updatedAuthors = [];
-    if (!jQuery.isEmptyObject(formData.authors)) {
-        let authorIndex = -1;
-        for (let checkedAuthor of formData.authors) {
-            authorIndex++;
-            for (let author of everyAuthor) {
-                console.log(formData.authors)
-                console.log(checkedAuthor.penName)
-                if (author.penName === checkedAuthor.penName) {
-                    updatedAuthors.push(author);
-                }
-                else {
-                    updatedAuthors.push(checkedAuthor);
-                }
-            }
-        }
-    }
-    formData.authors = undefined;
-
-    console.log(formData.authors);
+    let updatedAuthors = arrayDataForSubmit(formData.authors, everyAuthor, "penName");
+    delete formData.authors;
 
     updateBook(formData, updatedAuthors, formData.id);
 })
+
+function arrayDataForSubmit(newData, existingData, fieldName) {
+    console.log(newData);
+    let newDataWithId = [];
+    if (!jQuery.isEmptyObject(newData)) {
+        for (let newDatum of newData) {
+            for (let existingDatum of existingData) {
+                if (existingDatum[fieldName] === newDatum[fieldName]) {
+                    newDatum["id"] = existingDatum.id;
+                }
+            }
+        }
+        newDataWithId = newData.slice(0);
+    }
+    return newDataWithId;
+}
 
 
 function serializeLogic(value, name, object, arrayField) {
