@@ -51,13 +51,13 @@ public class BookController {
 	}
 
 	@PutMapping("/updateBook/{id}")
-	public Book updateBook(@RequestBody Book book, @PathVariable("id") Long id) {
+	public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
 		return this.service.updateBook(book, id);
 	}
 
 	@PatchMapping("/appendAuthor/{id}")
 	public Book addAuthorToBook(@PathVariable Long id, @RequestBody Collection<Author> authors) {
-		return this.service.addAuthorToBook(id, authors);
+		return this.service.updateBookAuthors(id, authors);
 	}
 
 	@PatchMapping("/updateBookAuthors/{id}")

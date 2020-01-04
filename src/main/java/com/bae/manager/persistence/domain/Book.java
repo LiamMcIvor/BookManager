@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,7 +22,7 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long bookId;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(name = "author_book_link", joinColumns = @JoinColumn(name = "bookId"), inverseJoinColumns = @JoinColumn(name = "AuthorId"))
 	private Set<Author> authors;
 

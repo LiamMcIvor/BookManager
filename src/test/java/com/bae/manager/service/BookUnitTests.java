@@ -219,8 +219,6 @@ public class BookUnitTests {
 	
 	@Test
 	public void updateBookAuthors() {
-		this.testBook.setId(this.id);
-		this.testBook.getAuthors().add(this.testAuthor2WithId);
 		this.testBookWithId.getAuthors().add(this.testAuthorWithId);
 		this.testBookWithId.getAuthors().add(this.testAuthor2WithId);
 		

@@ -91,7 +91,7 @@ public class BookControllerUnitTest {
 		Book updatedBook = new Book(newBook.getTitle(), newBook.getIsbn(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
 		updatedBook.setId(this.id);
 		when(this.service.updateBook(newBook, this.id)).thenReturn(updatedBook);
-		assertEquals(updatedBook, this.controller.updateBook(newBook, this.id));
+		assertEquals(updatedBook, this.controller.updateBook(this.id, newBook));
 		verify(this.service, times(1)).updateBook(newBook, this.id);
 	}
 	

@@ -18,7 +18,7 @@ $(document).ready(function () {
         let id = $(this).attr("id");
         getBookForUpdate(id);
         $("#bookTable").toggle();
-        $("#formContainer").toggle();
+        $("#updateFormContainer").toggle();
         $('.js-example-basic-multiple').select2({
             placeholder: "Select Author(s)",
             tags: true,
@@ -30,7 +30,7 @@ $(document).ready(function () {
 
 
 
-$("#createForm").submit(function(event) {
+$("form", "#addFormContainer").submit(function (event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
     let repeatedAuthors = [];
@@ -47,6 +47,8 @@ $("#createForm").submit(function(event) {
         }
         else {
             for (let author of everyAuthor) {
+                console.log(author.penName);
+                console.log(formData.authors.penName);
                 if (author.penName === formData.authors.penName) {
                     formData.authors.splice(checkedAuthor, 1);
                     repeatedAuthors.push(author);
@@ -57,12 +59,31 @@ $("#createForm").submit(function(event) {
     addBook(formData, repeatedAuthors);
 });
 
-updateForm.submit(function(event) {
+$("form", "#updateFormContainer").submit(function (event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
     let updatedAuthors = [];
     if (!jQuery.isEmptyObject(formData.authors)) {
+        let authorIndex = -1;
+        for (let checkedAuthor of formData.authors) {
+            authorIndex++;
+            for (let author of everyAuthor) {
+                console.log(formData.authors)
+                console.log(checkedAuthor.penName)
+                if (author.penName === checkedAuthor.penName) {
+                    updatedAuthors.push(author);
+                }
+                else {
+                    updatedAuthors.push(checkedAuthor);
+                }
+            }
+        }
+    }
+    formData.authors = undefined;
 
+    console.log(formData.authors);
+
+    updateBook(formData, updatedAuthors, formData.id);
 })
 
 
@@ -90,7 +111,7 @@ $.fn.serializeObject = function () {
             let adjustedString = this.name.replace(/]/g, "").split("[");
             let obj = {};
             obj[adjustedString[1]] = this.value || "";
-            serializeLogic(obj, adjustedString[0], serializedObject, true)
+            serializeLogic(obj, adjustedString[0], serializedObject, true);
         }
         else {
             serializeLogic(this.value || "", this.name, serializedObject, false);
@@ -162,9 +183,28 @@ function addBook(book, repeatedAuthors) {
         });
 }
 
-function updateBook(book, newAuthors, id) {
+function updateBook(book, authorList, id) {
+    console.log(book);
+    console.log(authorList);
+    console.log(typeof id);
     let updateUrl = `http://localhost:8080/book/updateBook/${id}`;
-    axios.put(updateUrl, book)
+    axios.put(updateUrl, book, config)
+        .then((response) => {
+            console.log(response);
+            updateBookAuthors(authorList, id);
+        }).catch((error) => {
+            console.error(error);
+        });
+}
+
+function updateBookAuthors(authorList, id) {
+    let updateUrl = `http://localhost:8080/book/updateBookAuthors/${id}`;
+    axios.patch(updateUrl, authorList)
+        .then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            console.error(error);
+        });
 }
 
 function appendRepeatedAuthors(id, authorList) {
@@ -261,7 +301,7 @@ function prepopulateForm(bookData) {
             formField = $("#authors", updateForm);
             for (let author of bookData.authors) {
                 selectedAuthors.push(author.penName);
-            }                
+            }
             formField.val(selectedAuthors);
             formField.trigger("change");
         }

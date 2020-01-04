@@ -43,7 +43,7 @@ public class BookService {
 	}
 
 	public Book updateBook(Book book, long id) {
-		verifyValidBook(book);
+		//verifyValidBook(book);
 		Book toUpdate = findBookById(id);
 		toUpdate.setTitle(book.getTitle());
 		toUpdate.setSeries(book.getSeries());
@@ -96,7 +96,7 @@ public class BookService {
 	public Book updateBookAuthors(long id, Collection<Author> authors) {
 		Book toUpdate = this.findBookById(id);
 		toUpdate.getAuthors().clear();
-		
+
 		for(Author author : authors) {
 			if(!this.authorService.findRepeatedAuthor(author)) {
 				author = this.authorService.createAuthor(author);
