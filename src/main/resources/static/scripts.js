@@ -31,7 +31,7 @@ $(document).ready(function () {
         console.log(typeof id + id);
     });
 });
-
+//add form breaks if below 3 runs not commented out, separate out later
 popupButton.onclick = function() {
     popup.style.display = "block";
 }
@@ -166,11 +166,11 @@ function createTestBook() {
 }
 const config = { headers: { 'Content-Type': 'application/json' } };
 
-function addBook(book, repeatedAuthors) {
+function addBook(book, authorList) {
     console.log(book);
     axios.post("http://localhost:8080/book/createBook", book, config)
         .then((response) => {
-            appendRepeatedAuthors(response.data.id, repeatedAuthors);
+            updateBookAuthors(authorList, response.data.id);
         }).catch((error) => {
             console.error(error);
         });
@@ -193,16 +193,6 @@ function updateBook(book, authorList, id) {
 function updateBookAuthors(authorList, id) {
     let updateUrl = `http://localhost:8080/book/updateBookAuthors/${id}`;
     axios.patch(updateUrl, authorList)
-        .then((response) => {
-            console.log(response);
-        }).catch((error) => {
-            console.error(error);
-        });
-}
-
-function appendRepeatedAuthors(id, authorList) {
-    let appendUrl = `http://localhost:8080/book/appendAuthor/${id}`;
-    axios.patch(appendUrl, authorList)
         .then((response) => {
             console.log(response);
         }).catch((error) => {

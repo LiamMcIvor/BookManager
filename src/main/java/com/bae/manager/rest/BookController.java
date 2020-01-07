@@ -55,11 +55,6 @@ public class BookController {
 		return this.service.updateBook(book, id);
 	}
 
-	@PatchMapping("/appendAuthor/{id}")
-	public Book addAuthorToBook(@PathVariable Long id, @RequestBody Collection<Author> authors) {
-		return this.service.updateBookAuthors(id, authors);
-	}
-
 	@PatchMapping("/updateBookAuthors/{id}")
 	public Book updateBookAuthors(@PathVariable Long id, @RequestBody Collection<Author> authors) {
 		return this.service.updateBookAuthors(id, authors);
