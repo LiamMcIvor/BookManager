@@ -3,7 +3,11 @@ const tableContainer = document.getElementById("bookTableContainer");
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
 const createForm = document.getElementById("addBookForm");
-const updateForm = document.getElementById("updateBookForm")
+const updateForm = document.getElementById("updateBookForm");
+const popup = document.getElementById("popup");
+const popupButton = document.getElementById("popupButton");
+const close = document.getElementById("close");
+
 let everyAuthor = [];
 
 
@@ -28,7 +32,19 @@ $(document).ready(function () {
     });
 });
 
+popupButton.onclick = function() {
+    popup.style.display = "block";
+}
 
+close.onclick = function() {
+    popup.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == popup) {
+        popup.style.display = "none";
+    }
+}
 
 $("form", "#addFormContainer").submit(function (event) {
     event.preventDefault();
