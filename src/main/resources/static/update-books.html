@@ -3,6 +3,8 @@
 
 <head>
   <title>Book Manager - Update/Delete</title>
+  <link rel="shortcut icon" href="./bookStack.png" type="image/x-icon" />
+
   <link rel="stylesheet" href="./stylesheet.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -111,12 +113,39 @@
     </form>
   </div>
   <button id="popupButton">popup</button>
-  <div id="popup" class="modal">
-    <div class="modal-content">
-    <span id="close" class="close">&times;</span>
-    <p><span class="glyphicon glyphicon-trash"></span> hi</p>
+
+  <div id="popup" class="modal update-delete-modal">
+    <div class="modal-content update-delete-modal-content">
+      <span id="close" class="close"><span class="glyphicon glyphicon-remove"></span></span>
+      <div class="modal-text-div">
+        <h2 class="modal-text">Would you like to <br> update or delete the book?</h2>
+      </div>
+      <div>
+        <button class="modal-button btn modal-text">
+          <span class="glyphicon glyphicon-refresh"></span>    Update
+        </button>
+        <button class="btn modal-button modal-text">
+          <span class="glyphicon glyphicon-trash"></span>    Delete
+        </button>
     </div>
   </div>
+  </div>
+
+  <div id="deletePopup" class="modal">
+    <div class="modal-content update-delete-modal-content">
+      <span id="close" class="close"><span class="glyphicon glyphicon-remove"></span></span>
+      <div class="modal-text-div">
+        <h2 class="modal-text">Would you like to <br> update or delete the book?</h2>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-button btn modal-text">Update</button>
+        <button class="btn modal-button modal-text">
+          <span class="glyphicon glyphicon-trash"></span>    Delete
+        </button>
+      </span>
+    </div>
+  </div>  </div>
+
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="./scripts.js"></script>
 </body>

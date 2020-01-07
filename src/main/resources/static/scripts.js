@@ -7,6 +7,7 @@ const updateForm = document.getElementById("updateBookForm");
 const popup = document.getElementById("popup");
 const popupButton = document.getElementById("popupButton");
 const close = document.getElementById("close");
+// const delete = document.
 
 let everyAuthor = [];
 
@@ -211,16 +212,16 @@ function getBookForUpdate(id) {
         });
 }
 
-function getBooks(clickable) {
+function getBooks() {
     axios.get("http://localhost:8080/book/getAll")
         .then((response) => {
-            constructTableBody(response.data, clickable);
+            constructTableBody(response.data);
         }).catch((error) => {
             console.error(error);
         });
 }
 
-function addRow(book, clickable) {
+function addRow(book) {
     let row = document.createElement("tr");
     row.setAttribute("id", book.id);
 

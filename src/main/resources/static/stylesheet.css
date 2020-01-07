@@ -21,5 +21,23 @@
     text-align: center;
 }
 .update-delete-modal {
-    background-color: ;
+    background-color: rgba(247, 243, 237, 0.6);
+    text-align: center;
+}
+.update-delete-modal-content {
+    padding: 10px 10px 20px;
+    width: fit-content;
+    margin: 100px auto;
+}
+.modal-text-div {
+    padding-bottom: 10px;
+}
+.modal-text {
+    font-weight: bold;
+}
+.modal-button {
+    padding-top: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0px;
 }
