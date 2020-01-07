@@ -7,7 +7,8 @@ const updateForm = document.getElementById("updateBookForm");
 const popup = document.getElementById("popup");
 const popupButton = document.getElementById("popupButton");
 const close = document.getElementById("close");
-// const delete = document.
+const deletePopup = document.getElementById("deletePopup");
+const deleteClose = document.getElementById("deleteClose")
 
 let everyAuthor = [];
 
@@ -21,29 +22,50 @@ $(document).ready(function () {
     getAuthorsForSelect();
     $("#bookTableBody").on("click", "tr", function () {
         let id = $(this).attr("id");
-        getBookForUpdate(id);
-        $("#bookTable").toggle();
-        $("#updateFormContainer").toggle();
-        $('.js-example-basic-multiple').select2({
-            placeholder: "Select Author(s)",
-            tags: true,
-            maximumSelectionSize: 10,
+        let title = $(this).attr("name");
+        popup.style.display = "block";
+        $("#bookId", popup).html(id);
+        $("#delete", popup).on("click", function() {
+            $("#deletePopupText", deletePopup).html(`Are you sure you want to delete <br> ${title} <br> from your book collection?`);
+            popup.style.display = "none";
+            deletePopup.style.display = "block";
+            console.log(id);
+            $("#delete", deletePopup).on("click", function() {
+                deleteBook(id, title);
+                deletePopup.style.display = "none";
+            });
         });
-        console.log(typeof id + id);
+        $("#update", popup).on("click", function() {
+            popup.style.display = "none";
+            getBookForUpdate(id);
+            $("#bookTable").toggle();
+            $("#updateFormContainer").toggle();
+            $('.js-example-basic-multiple').select2({
+                placeholder: "Select Author(s)",
+                tags: true,
+                maximumSelectionSize: 10,
+            });
+        })
     });
 });
-//add form breaks if below 3 runs not commented out, separate out later
-popupButton.onclick = function() {
-    popup.style.display = "block";
-}
+
+
+
+//add form breaks if below 2 funcs not commented out, separate out later
 
 close.onclick = function() {
     popup.style.display = "none";
+}
+deleteClose.onclick = function() {
+    deletePopup.style.display = "none";
 }
 
 window.onclick = function(event) {
     if (event.target == popup) {
         popup.style.display = "none";
+    }
+    else if (event.target == deletePopup) {
+        deletePopup.style.display = "none";
     }
 }
 
@@ -62,7 +84,7 @@ $("form", "#updateFormContainer").submit(function (event) {
     delete formData.authors;
 
     updateBook(formData, updatedAuthors, formData.id);
-})
+});
 
 function arrayDataForSubmit(newData, existingData, fieldName) {
     console.log(newData);
@@ -167,6 +189,17 @@ function createTestBook() {
 }
 const config = { headers: { 'Content-Type': 'application/json' } };
 
+function deleteBook(id, title) {
+    let deleteUrl = `http://localhost:8080/book/delete/${id}`;
+    axios.delete(deleteUrl)
+        .then((response) => {
+            console.log(response);
+            if (!alert(`${title} Has Been Deleted`)) location.reload();
+        }).catch((error) => {
+            console.error(error);
+        });
+}
+
 function addBook(book, authorList) {
     console.log(book);
     axios.post("http://localhost:8080/book/createBook", book, config)
@@ -224,6 +257,7 @@ function getBooks() {
 function addRow(book) {
     let row = document.createElement("tr");
     row.setAttribute("id", book.id);
+    row.setAttribute("name", book.title);
 
     let titleCell = document.createElement("td");
     titleCell.innerHTML = book.title;
