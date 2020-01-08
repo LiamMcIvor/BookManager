@@ -59,7 +59,7 @@
       </div>
       <div class="form-group">
         <label for="titleField">Title:</label>
-        <input type="text" class="form-control" id="titleField" placeholder="Enter Book Title" name="title" required maxlength="250">
+        <input type="text" class="form-control" id="titleField" placeholder="Enter Book Title" name="title" required maxlength="150">
       </div>
       <div id="FormMultiSelect" class="form-group">
         <label for="authors">Select Author(s):</label>
@@ -68,9 +68,9 @@
       </div>
       <div class="form-group">
         <label for="series">Series:</label>
-        <input type="text" class="form-control" id="series" placeholder="Enter Series or N/A" name="series" required maxlength="100">
+        <input type="text" class="form-control" id="series" placeholder="Enter Series or N/A" name="series" required maxlength="60">
       </div>
-      <div class="form-group">
+      <div id="ownedWishlist" class="form-group">
         <label for="owned">Is the Book Owned or on Your Wishlist?</label>
         <br>
         <label class="radio-inline">
@@ -78,11 +78,11 @@
           Owned
         </label>
         <label class="radio-inline">
-          <input type="radio" value="WISHLIST" id="wishlist" name="owned">
+          <input type="radio" value="WISHLIST" id="wishlist" name="owned" required>
           Wishlist
         </label>
       </div>
-      <div class="form-group">
+      <div id="completionRadio" class="form-group">
         <label for="completion">What is Your Current Completion of the Book?</label>
         <br>
         <label class="radio-inline">
@@ -94,7 +94,7 @@
           Reading
         </label>
         <label class="radio-inline">
-          <input type="radio" value="TO_READ" id="toRead" name="completion">
+          <input type="radio" value="TO_READ" id="toRead" name="completion" required>
           To Read
         </label>
       </div>
@@ -142,7 +142,11 @@
   </div>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="./scripts.js"></script>
+  <script src="./requests.js"></script>
+  <script src="./table-scripts.js"></script>
+  <script src="./update-delete-scripts.js"></script>
+  <script src="./serializing-scripts.js"></script>
+  <script src="./form-scripts.js"></script>
 </body>
 
 </html>

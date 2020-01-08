@@ -58,11 +58,11 @@ public class BookService {
 	}
 
 	public Boolean verifyValidBook(Book book) {
-		if (book.getTitle().length() > 250) {
+		if (book.getTitle().length() > 150) {
 			throw new InvalidEntryException();
 		}
-		else if (book.getSeries().length() > 100) {
-			
+		else if (book.getSeries().length() > 60) {
+			throw new InvalidEntryException();
 		}
 		else if (findRepeatedBook(book)) {
 			throw new DuplicateValueException();

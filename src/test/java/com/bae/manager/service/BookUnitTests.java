@@ -48,8 +48,9 @@ public class BookUnitTests {
 	
 	private final long id = 1L;
 	
-	private String length251 = "PebvtPIUTFWcyFFtucstLjqIhztILbbWHnoMZpfMupJsQjdqxDcpFfDtrJcdajvmqqocwlbzjROsLYcgZgWyboQPzxCdhVrvXnXJEXOhkzSGoEyeWFlkvHIkiDJIjsWRqZcVbpwZoRqsgdRVxDjWQvMPuIeYQnqxCDpdTkvaFnCdoPSYKWjPKIyOGbRJCurpbkoBgTmmc"
-			+ "XhAcsWAgQPahSNCcaHuvsHNruwYTgtDynDOswCtEuHRCfAxpAh";
+	private final String length151 = "GAATACCGATCATGATCCCCAACGTGCATTTACCAGAGGGTCATATTCTAAATAGGGTATTATGAGTCATCTGAATCTGTCCATGCGATTCGGGGCACCGATGTCGCGGACACGGTTTAAAATCCTATCAACCAGGTGACAATATGCCATC";
+	
+	private final String length61 = "CCACGTTTGTACCTAACCAGCGATTAGTAGTGATCTGGTTATTTGGATAGCGCTTTTTGTT";
 	
 	private long invalidId;
 	
@@ -120,7 +121,15 @@ public class BookUnitTests {
 	
 	@Test
 	public void titleTooLongTest() {
-		this.testBookFail.setTitle(length251);
+		this.testBookFail.setTitle(length151);
+		assertThrows(InvalidEntryException.class, () -> {
+			this.service.createBook(this.testBookFail);
+		});
+	}
+	
+	@Test
+	public void seriesTooLongTest() {
+		this.testBookFail.setSeries(length61);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});

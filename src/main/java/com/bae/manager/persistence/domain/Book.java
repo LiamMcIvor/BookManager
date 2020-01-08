@@ -22,7 +22,7 @@ import com.bae.manager.enums.Owned;
 public class Book {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long bookId;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
