@@ -69,6 +69,10 @@ window.onclick = function(event) {
     }
 }
 
+$.fn.formCustomValidation = function() {
+    
+}
+
 $("form", "#addFormContainer").submit(function (event) {
     event.preventDefault();
     let formData = $(this).serializeObject();
@@ -271,10 +275,6 @@ function addRow(book) {
     authorsString = authorsString.replace(/,\s*$/, "");
     authorsCell.innerHTML = authorsString;
     row.appendChild(authorsCell);
-
-    let isbnCell = document.createElement("td");
-    isbnCell.innerHTML = book.isbn;
-    row.appendChild(isbnCell);
 
     let seriesCell = document.createElement("td");
     seriesCell.innerHTML = book.series;

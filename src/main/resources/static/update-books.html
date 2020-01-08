@@ -42,7 +42,6 @@
         <tr>
           <th>Title</th>
           <th>Author(s)</th>
-          <th>ISBN</th>
           <th>Series</th>
           <th>Owned/Wishlist</th>
           <th>Completion</th>
@@ -60,7 +59,7 @@
       </div>
       <div class="form-group">
         <label for="titleField">Title:</label>
-        <input type="text" class="form-control" id="titleField" placeholder="Enter Book Title" name="title" required>
+        <input type="text" class="form-control" id="titleField" placeholder="Enter Book Title" name="title" required maxlength="250">
       </div>
       <div id="FormMultiSelect" class="form-group">
         <label for="authors">Select Author(s):</label>
@@ -68,12 +67,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="isbn">ISBN:</label>
-        <input type="number" class="form-control" id="isbn" placeholder="Enter ISBN" name="isbn" required>
-      </div>
-      <div class="form-group">
         <label for="series">Series:</label>
-        <input type="text" class="form-control" id="series" placeholder="Enter Series or N/A" name="series" required>
+        <input type="text" class="form-control" id="series" placeholder="Enter Series or N/A" name="series" required maxlength="100">
       </div>
       <div class="form-group">
         <label for="owned">Is the Book Owned or on Your Wishlist?</label>
@@ -106,7 +101,7 @@
       <div class="form-group">
         <label for="timesRead">Number of Times Read:</label>
         <input type="number" class="form-control" id="timesRead" placeholder="Enter Number of Times Read"
-          name="timesRead" required>
+          name="timesRead" required min="0" max="1000">
       </div>
 
       <button type="submit" class="btn btn-default">Submit</button>

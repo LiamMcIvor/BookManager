@@ -71,14 +71,14 @@ public class BookUnitTests {
 	public void init() {
 		this.bookList = new ArrayList<>();
 		this.authorList = new ArrayList<>();
-		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
-		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBook = new Book("The Colour of Magic", "Discworld", 2, Owned.OWNED, Completion.READING);
+		this.testBookWithId = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookWithId.setId(id);
 		this.bookList.add(testBook);
 		this.bookList.add(testBook);
-		this.testBookFail = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBookFail = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookFail.setId(id);
-		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getIsbn(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
+		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
 		this.testBookFailWithId.setId(id);
 		this.invalidId = 2L;
 		
@@ -127,26 +127,6 @@ public class BookUnitTests {
 	}
 	
 	@Test
-	public void isbnRulesTest() {
-		this.testBookFail.setIsbn("12");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("10258745212");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("12675963415872");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("1j2");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-	}
-	
-	@Test
 	public void timesReadRulesTest() {
 		this.testBookFail.setTimesRead(-1);
 		assertThrows(InvalidEntryException.class, () -> {
@@ -166,8 +146,8 @@ public class BookUnitTests {
 	
 	@Test
 	public void updateBooksTest() {
-		Book newBook = new Book("The color of Magic", "9752368741", "DiskWorld", 3, Owned.WISHLIST, Completion.TO_READ);
-		Book updatedBook = new Book(newBook.getTitle(), newBook.getIsbn(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		Book newBook = new Book("The color of Magic", "DiskWorld", 3, Owned.WISHLIST, Completion.TO_READ);
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
 		updatedBook.setId(this.id);
 		
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));

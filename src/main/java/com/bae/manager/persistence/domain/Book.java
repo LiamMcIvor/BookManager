@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.validator.constraints.ISBN;
+
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
 
@@ -28,7 +30,6 @@ public class Book {
 	private Set<Author> authors;
 
 	private String title;
-	private String isbn;
 	private String series;
 	private int timesRead;
 	private Owned owned;
@@ -38,10 +39,9 @@ public class Book {
 		super();
 	}
 
-	public Book(String title, String isbn, String series, int timesRead, Owned owned, Completion completion, Author...authors) {
+	public Book(String title, String series, int timesRead, Owned owned, Completion completion, Author...authors) {
 		super();
 		this.title = title;
-		this.isbn = isbn;
 		this.series = series;
 		this.timesRead = timesRead;
 		this.owned = owned;
@@ -71,14 +71,6 @@ public class Book {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
 	}
 
 	public String getSeries() {
@@ -115,7 +107,7 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [id=" + bookId + ", Authors=" + authors + ", title=" + title + ", isbn=" + isbn + ", series=" + series
+		return "Book [id=" + bookId + ", Authors=" + authors + ", title=" + title + ", series=" + series
 				+ ", timesRead=" + timesRead + ", owned=" + owned + ", completion=" + completion + "]";
 	}
 

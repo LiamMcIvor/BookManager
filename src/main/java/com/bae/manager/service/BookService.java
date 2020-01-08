@@ -47,9 +47,9 @@ public class BookService {
 		Book toUpdate = findBookById(id);
 		toUpdate.setTitle(book.getTitle());
 		toUpdate.setSeries(book.getSeries());
-		toUpdate.setIsbn(book.getIsbn());
 		toUpdate.setOwned(book.getOwned());
 		toUpdate.setCompletion(book.getCompletion());
+		toUpdate.setTimesRead(book.getTimesRead());
 		return this.repo.save(toUpdate);
 	}
 
@@ -61,19 +61,15 @@ public class BookService {
 		if (book.getTitle().length() > 250) {
 			throw new InvalidEntryException();
 		}
+		else if (book.getSeries().length() > 100) {
+			
+		}
 		else if (findRepeatedBook(book)) {
 			throw new DuplicateValueException();
-		}
-		else if (!StringUtils.isNumeric(book.getIsbn())) {
-			throw new InvalidEntryException();
-		}
-		else if (!(book.getIsbn().length() == 10 || book.getIsbn().length() == 13)) {
-			throw new InvalidEntryException();
 		}
 		else if (book.getTimesRead() < 0 || book.getTimesRead() > 1000) {
 			throw new InvalidEntryException();
 		}
-
 		return true;
 	}
 

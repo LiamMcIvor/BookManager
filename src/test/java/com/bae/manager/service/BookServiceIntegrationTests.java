@@ -19,10 +19,8 @@ import com.bae.manager.persistence.repo.BookRepo;
 class BookServiceIntegrationTests {
 	@Autowired
 	private BookRepo repo;
-	
-	private final String TEST_ISBN = "2432655555";
-	
-	private final Book TEST_BOOK = new Book("The Colour of Magic", TEST_ISBN, "Discworld", 2, Owned.OWNED, Completion.READING);
+		
+	private final Book TEST_BOOK = new Book("The Colour of Magic", "Discworld", 2, Owned.OWNED, Completion.READING);
 	
 	private Book testSavedBook;
 
@@ -34,7 +32,7 @@ class BookServiceIntegrationTests {
 	}
 	
 	@Test
-	public void test() {
+	public void integrationTest() {
 		assertThat(this.repo.findById(1L)).contains(this.testSavedBook);
 	}
 	
