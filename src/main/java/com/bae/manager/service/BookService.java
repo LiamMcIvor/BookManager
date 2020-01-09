@@ -30,7 +30,7 @@ public class BookService {
 	}
 
 	public Book createBook(Book book) {
-		verifyValidBook(book);
+		verifyValidBook(book, true);
 		return this.repo.save(book);
 	}
 
@@ -43,7 +43,7 @@ public class BookService {
 	}
 
 	public Book updateBook(Book book, long id) {
-		//verifyValidBook(book);
+		verifyValidBook(book, false);
 		Book toUpdate = findBookById(id);
 		toUpdate.setTitle(book.getTitle());
 		toUpdate.setSeries(book.getSeries());
@@ -57,14 +57,14 @@ public class BookService {
 		return this.repo.findById(id).orElseThrow(EntryNotFoundException::new);
 	}
 
-	public Boolean verifyValidBook(Book book) {
+	public Boolean verifyValidBook(Book book, boolean newBook) {
 		if (book.getTitle().length() > 150) {
 			throw new InvalidEntryException();
 		}
 		else if (book.getSeries().length() > 60) {
 			throw new InvalidEntryException();
 		}
-		else if (findRepeatedBook(book)) {
+		else if (newBook && findRepeatedBook(book)) {
 			throw new DuplicateValueException();
 		}
 		else if (book.getTimesRead() < 0 || book.getTimesRead() > 1000) {
