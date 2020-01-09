@@ -4,6 +4,7 @@ const close = document.getElementById("close");
 const deletePopup = document.getElementById("deletePopup");
 const deleteClose = document.getElementById("deleteClose");
 const updateForm = document.getElementById("updateBookForm");
+const cancelDelete = document.getElementById("cancelDelete");
 
 
 $(document).ready(function () {
@@ -40,6 +41,9 @@ close.onclick = function() {
     popup.style.display = "none";
 };
 deleteClose.onclick = function() {
+    deletePopup.style.display = "none";
+};
+cancelDelete.onclick = function() {
     deletePopup.style.display = "none";
 };
 
