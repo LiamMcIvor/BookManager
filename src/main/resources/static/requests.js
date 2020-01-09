@@ -8,6 +8,9 @@ function getBookForUpdate(id) {
             prepopulateForm(response.data);
         }).catch((error) => {
             console.error(error);
+            if (error.status === 404) {
+                alert("ID Not Found");
+            };
         });
 };
 
@@ -17,10 +20,13 @@ function deleteBook(id, title) {
     let deleteUrl = `http://localhost:8080/book/delete/${id}`;
     axios.delete(deleteUrl)
         .then((response) => {
-            console.log(response);
+            console.log(response.status);
             if (!alert(`${title} Has Been Deleted`)) location.reload();
         }).catch((error) => {
             console.error(error);
+            if (error.status === 404) {
+            alert("ID Not Found");
+            };
         });
 };
 
@@ -28,10 +34,17 @@ function addBook(book, authorList) {
     console.log(book);
     axios.post("http://localhost:8080/book/createBook", book, config)
         .then((response) => {
+            console.log(response.status)
             updateBookAuthors(authorList, response.data.id);
             if (!alert(`${response.data.title} Has Been Created`)) location.reload();
         }).catch((error) => {
             console.error(error);
+            if (error.status === 409) {
+                alert("Please Ensure You Have Not Duplicated A Book Title");
+            }
+            else if (error.status === 406) {
+                alert("Please Ensure The Entry Fields Obey The Specified Limits");
+            };
         });
 };
 
@@ -42,10 +55,16 @@ function updateBook(book, authorList, id) {
     let updateUrl = `http://localhost:8080/book/updateBook/${id}`;
     axios.put(updateUrl, book, config)
         .then((response) => {
-            console.log(response);
+            console.log(response.status);
             updateBookAuthors(authorList, id);
         }).catch((error) => {
             console.error(error);
+            if (error.status === 409) {
+                alert("Please Ensure You Have Not Duplicated A Book Title");
+            }
+            else if (error.status === 406) {
+                alert("Please Ensure The Entry Fields Obey The Specified Limits");
+            };
         });
 };
 
@@ -57,5 +76,11 @@ function updateBookAuthors(authorList, id) {
             if (!alert(`${response.data.title} Has Been Updated`)) location.reload();
         }).catch((error) => {
             console.error(error);
+            if (error.status === 404) {
+                alert("ID Not Found");
+            }
+            else if (error.status === 500) {
+                alert("Please Ensure You Have Not Created Any Repeated Authors")
+            };
         });
 };

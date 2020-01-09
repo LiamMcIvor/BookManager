@@ -16,6 +16,7 @@ $(document).ready(function () {
 function getAuthorsForSelect() {
     axios.get("http://localhost:8080/author/getAll")
         .then((response) => {
+            console.log(response.status)
             populateAuthorsSelect(response.data);
         }).catch((error) => {
             console.error(error);

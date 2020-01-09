@@ -45,6 +45,9 @@ public class BookService {
 	public Book updateBook(Book book, long id) {
 		verifyValidBook(book, false);
 		Book toUpdate = findBookById(id);
+		if (!book.getTitle().equals(toUpdate.getTitle()) && findRepeatedBook(book)) {
+			throw new DuplicateValueException();
+		}
 		toUpdate.setTitle(book.getTitle());
 		toUpdate.setSeries(book.getSeries());
 		toUpdate.setOwned(book.getOwned());
