@@ -59,12 +59,3 @@ function updateBookAuthors(authorList, id) {
             console.error(error);
         });
 };
-
-function getBooks() {
-    axios.get("http://localhost:8080/book/getAll")
-        .then((response) => {
-            constructTableBody(response.data);
-        }).catch((error) => {
-            console.error(error);
-        });
-};

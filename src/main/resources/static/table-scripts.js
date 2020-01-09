@@ -2,6 +2,11 @@
 const tableContainer = document.getElementById("bookTableContainer");
 const table = document.getElementById("bookTable");
 const tableBody = document.getElementById("bookTableBody");
+const searchBar = document.getElementById("searchBar");
+const deletePopup = document.getElementById("deletePopup");
+const popup = document.getElementById("popup");
+
+let everyBook = [];
 
 function addRow(book) {
     let row = document.createElement("tr");
@@ -38,24 +43,71 @@ function addRow(book) {
     row.appendChild(timesReadCell);
 
     tableBody.appendChild(row);
-}
+};
 
-function constructTableBody(bookList, clickable) {
+function constructTableBody(bookList) {
     clearTableBody();
     if (!jQuery.isEmptyObject(bookList)) {
         for (let book of bookList) {
-            addRow(book, clickable);
+            addRow(book);
         }
         $("#bookTable").toggle();
     }
     else {
+        tableContainer.innerHTML="";
         let message = document.createElement("h3");
         message.innerText = "There Are Currently No Saved Books";
         message.classList.add("blank-table-background");
         tableContainer.appendChild(message);
     }
-}
+};
+
+function getBooks(clickRow) {
+    axios.get("http://localhost:8080/book/getAll")
+        .then((response) => {
+            constructTableBody(response.data);
+            $("#bookTable").DataTable({
+                paging: false,
+                scrollY: true,
+                info: false,
+            });
+            if (clickRow) {
+                clickable();
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+};
 
 function clearTableBody() {
     tableBody.innerHTML = "";
-}
+};
+
+function clickable() {
+    $("#bookTableBody").on("click", "tr", function () {
+        let id = $(this).attr("id");
+        let title = $(this).attr("name");
+        popup.style.display = "block";
+        $("#delete", popup).on("click", function() {
+            $("#deletePopupText", deletePopup).html(`Are you sure you want to delete <br> ${title} <br> from your book collection?`);
+            popup.style.display = "none";
+            deletePopup.style.display = "block";
+            $("#delete", deletePopup).on("click", function() {
+                deleteBook(id, title);
+                deletePopup.style.display = "none";
+            });
+        });
+        $("#update", popup).on("click", function() {
+            popup.style.display = "none";
+            getBookForUpdate(id);
+            $("#bookTableContainer").toggle();
+            $("#updateFormContainer").toggle();
+            $('.js-example-basic-multiple').select2({
+                placeholder: "Select Author(s)",
+                tags: true,
+                maximumSelectionSize: 10,
+                maximumInputLength: 80
+            });
+        })
+    });
+};

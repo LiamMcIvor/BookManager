@@ -1,5 +1,6 @@
 "use strict"
 const completionRadio = document.getElementById("toRead");
+
 let everyAuthor = [];
 
 $(document).ready(function () {

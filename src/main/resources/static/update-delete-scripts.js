@@ -1,41 +1,10 @@
 "use strict"
-const popup = document.getElementById("popup");
+// const popup = document.getElementById("popup");
 const close = document.getElementById("close");
-const deletePopup = document.getElementById("deletePopup");
+// const deletePopup = document.getElementById("deletePopup");
 const deleteClose = document.getElementById("deleteClose");
 const updateForm = document.getElementById("updateBookForm");
 const cancelDelete = document.getElementById("cancelDelete");
-
-
-$(document).ready(function () {
-    $("#bookTableBody").on("click", "tr", function () {
-        let id = $(this).attr("id");
-        let title = $(this).attr("name");
-        popup.style.display = "block";
-        $("#bookId", popup).html(id);
-        $("#delete", popup).on("click", function() {
-            $("#deletePopupText", deletePopup).html(`Are you sure you want to delete <br> ${title} <br> from your book collection?`);
-            popup.style.display = "none";
-            deletePopup.style.display = "block";
-            $("#delete", deletePopup).on("click", function() {
-                deleteBook(id, title);
-                deletePopup.style.display = "none";
-            });
-        });
-        $("#update", popup).on("click", function() {
-            popup.style.display = "none";
-            getBookForUpdate(id);
-            $("#bookTable").toggle();
-            $("#updateFormContainer").toggle();
-            $('.js-example-basic-multiple').select2({
-                placeholder: "Select Author(s)",
-                tags: true,
-                maximumSelectionSize: 10,
-                maximumInputLength: 80
-            });
-        })
-    });
-});
 
 close.onclick = function() {
     popup.style.display = "none";
