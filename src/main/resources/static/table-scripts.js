@@ -63,7 +63,7 @@ function constructTableBody(bookList) {
 };
 
 function getBooks(clickRow) {
-    axios.get("http://localhost:8080/BookManager/book/getAll")
+    axios.get("http://3.9.214.211:8181//BookManager/book/getAll")
         .then((response) => {
             console.log(response.status)
             constructTableBody(response.data);

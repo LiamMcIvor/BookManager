@@ -1,7 +1,7 @@
 "use strict"
 
 function getBookForUpdate(id) {
-    let getOneUrl = `http://localhost:8080/BookManager/book/get/${id}`
+    let getOneUrl = `http://3.9.214.211:8181//BookManager/book/get/${id}`
     axios.get(getOneUrl)
         .then((response) => {
             console.log(response.status);
@@ -17,7 +17,7 @@ function getBookForUpdate(id) {
 const config = { headers: { 'Content-Type': 'application/json' } };
 
 function deleteBook(id, title) {
-    let deleteUrl = `http://localhost:8080/BookManager/book/delete/${id}`;
+    let deleteUrl = `http://3.9.214.211:8181//BookManager/book/delete/${id}`;
     axios.delete(deleteUrl)
         .then((response) => {
             console.log(response.status);
@@ -32,7 +32,7 @@ function deleteBook(id, title) {
 
 function addBook(book, authorList) {
     console.log(book);
-    axios.post("http://localhost:8080/book/createBook", book, config)
+    axios.post("http://3.9.214.211:8181//book/createBook", book, config)
         .then((response) => {
             console.log(response.status)
             updateBookAuthors(authorList, response.data.id);
@@ -52,7 +52,7 @@ function updateBook(book, authorList, id) {
     console.log(book);
     console.log(authorList);
     console.log(typeof id);
-    let updateUrl = `http://localhost:8080/BookManager/book/updateBook/${id}`;
+    let updateUrl = `http://3.9.214.211:8181//BookManager/book/updateBook/${id}`;
     axios.put(updateUrl, book, config)
         .then((response) => {
             console.log(response.status);
@@ -69,7 +69,7 @@ function updateBook(book, authorList, id) {
 };
 
 function updateBookAuthors(authorList, id) {
-    let updateUrl = `http://localhost:8080/BookManager/book/updateBookAuthors/${id}`;
+    let updateUrl = `http://3.9.214.211:8181//BookManager/book/updateBookAuthors/${id}`;
     axios.patch(updateUrl, authorList)
         .then((response) => {
             console.log(response.status);
