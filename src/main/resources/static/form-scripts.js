@@ -15,6 +15,7 @@ $(document).ready(function () {
 
 function getAuthorsForSelect() {
     axios.get("http://localhost:8080/BookManager/author/getAll")
+
         .then((response) => {
             console.log(response.status)
             populateAuthorsSelect(response.data);

@@ -32,7 +32,7 @@ function deleteBook(id, title) {
 
 function addBook(book, authorList) {
     console.log(book);
-    axios.post("http://localhost:8080/BookManager/book/createBook", book, config)
+    axios.post("http://localhost:8080/book/createBook", book, config)
         .then((response) => {
             console.log(response.status)
             updateBookAuthors(authorList, response.data.id);

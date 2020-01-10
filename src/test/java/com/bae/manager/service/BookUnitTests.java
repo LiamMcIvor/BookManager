@@ -48,10 +48,13 @@ public class BookUnitTests {
 	
 	private final long id = 1L;
 	
-	private String length251 = "PebvtPIUTFWcyFFtucstLjqIhztILbbWHnoMZpfMupJsQjdqxDcpFfDtrJcdajvmqqocwlbzjROsLYcgZgWyboQPzxCdhVrvXnXJEXOhkzSGoEyeWFlkvHIkiDJIjsWRqZcVbpwZoRqsgdRVxDjWQvMPuIeYQnqxCDpdTkvaFnCdoPSYKWjPKIyOGbRJCurpbkoBgTmmc"
-			+ "XhAcsWAgQPahSNCcaHuvsHNruwYTgtDynDOswCtEuHRCfAxpAh";
+	private final long id2 = 2L;
+
+	private final String length151 = "GAATACCGATCATGATCCCCAACGTGCATTTACCAGAGGGTCATATTCTAAATAGGGTATTATGAGTCATCTGAATCTGTCCATGCGATTCGGGGCACCGATGTCGCGGACACGGTTTAAAATCCTATCAACCAGGTGACAATATGCCATC";
 	
-	private long invalidId;
+	private final String length61 = "CCACGTTTGTACCTAACCAGCGATTAGTAGTGATCTGGTTATTTGGATAGCGCTTTTTGTT";
+	
+	private final long invalidId = 3L;
 	
 	private Book testBookFail;
 	
@@ -67,20 +70,27 @@ public class BookUnitTests {
 	
 	private List<Author> authorList;
 
+	private Book testBook2;
+
+	private Book testBook2WithId;
+
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
 		this.authorList = new ArrayList<>();
-		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
-		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBook = new Book("The Colour of Magic", "Discworld", 2, Owned.OWNED, Completion.READING);
+		this.testBookWithId = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBook2 = new Book("Good Omens", "N/A", 4, Owned.WISHLIST, Completion.TO_READ);
+		this.testBook2WithId = new Book(testBook2.getTitle(), testBook2.getSeries(), testBook2.getTimesRead(), testBook2.getOwned(), testBook2.getCompletion());
+
 		this.testBookWithId.setId(id);
+		this.testBook2WithId.setId(id2);
 		this.bookList.add(testBook);
-		this.bookList.add(testBook);
-		this.testBookFail = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.bookList.add(testBook2);
+		this.testBookFail = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookFail.setId(id);
-		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getIsbn(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
+		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
 		this.testBookFailWithId.setId(id);
-		this.invalidId = 2L;
 		
 		this.testAuthor = new Author("Terry Pratchett");
 		this.testAuthorWithId = new Author(testAuthor.getPenName());
@@ -120,27 +130,15 @@ public class BookUnitTests {
 	
 	@Test
 	public void titleTooLongTest() {
-		this.testBookFail.setTitle(length251);
+		this.testBookFail.setTitle(length151);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
 	}
 	
 	@Test
-	public void isbnRulesTest() {
-		this.testBookFail.setIsbn("12");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("10258745212");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("12675963415872");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("1j2");
+	public void seriesTooLongTest() {
+		this.testBookFail.setSeries(length61);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
@@ -166,18 +164,36 @@ public class BookUnitTests {
 	
 	@Test
 	public void updateBooksTest() {
-		Book newBook = new Book("The color of Magic", "9752368741", "DiskWorld", 3, Owned.WISHLIST, Completion.TO_READ);
-		Book updatedBook = new Book(newBook.getTitle(), newBook.getIsbn(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		Book newBook = new Book("The color of Magic", "DiskWorld", 3, Owned.WISHLIST, Completion.TO_READ);
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
 		updatedBook.setId(this.id);
 		
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
-		when(this.repo.save(updatedBook)).thenReturn(updatedBook);
+		when(this.repo.save(newBook)).thenReturn(updatedBook);
 		
 		assertEquals(updatedBook, this.service.updateBook(newBook, this.id));
 		
 		verify(this.repo, times(1)).findById(this.id);
 		verify(this.repo, times(1)).save(updatedBook);
 		
+	}
+	
+	@Test
+	public void updateBookChangeToExistingAuthorTest() {
+		Book newBook = new Book(testBook2.getTitle(), testBook2.getSeries(), testBook2.getTimesRead(), testBook2.getOwned(), testBook2.getCompletion());
+		newBook.setId(this.id2);
+		newBook.setTitle(testBook.getTitle());
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		updatedBook.setId(this.id2);
+		
+		when(this.repo.findById(this.id2)).thenReturn(Optional.of(this.testBook2));
+		when(this.repo.findAll()).thenReturn(this.bookList);
+		
+		assertThrows(DuplicateValueException.class, () -> {
+			this.service.updateBook(newBook, this.id2);
+		});
+		verify(this.repo, times(1)).findById(this.id2);
+		verify(this.repo, times(1)).findAll();
 	}
 	
 	@Test

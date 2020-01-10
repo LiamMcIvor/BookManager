@@ -5,6 +5,7 @@ bin/
 !**/src/main/**
 !**/src/test/**
 .mvn/
+/bin
 mvnw
 mvnw.cmd
 

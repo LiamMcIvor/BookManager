@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.validator.constraints.ISBN;
+
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
 
@@ -20,7 +22,7 @@ import com.bae.manager.enums.Owned;
 public class Book {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long bookId;
 
 	@ManyToMany(cascade = CascadeType.PERSIST)
@@ -28,7 +30,6 @@ public class Book {
 	private Set<Author> authors;
 
 	private String title;
-	private String isbn;
 	private String series;
 	private int timesRead;
 	private Owned owned;
@@ -38,10 +39,9 @@ public class Book {
 		super();
 	}
 
-	public Book(String title, String isbn, String series, int timesRead, Owned owned, Completion completion, Author...authors) {
+	public Book(String title, String series, int timesRead, Owned owned, Completion completion, Author...authors) {
 		super();
 		this.title = title;
-		this.isbn = isbn;
 		this.series = series;
 		this.timesRead = timesRead;
 		this.owned = owned;
@@ -71,14 +71,6 @@ public class Book {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
 	}
 
 	public String getSeries() {
@@ -115,7 +107,7 @@ public class Book {
 
 	@Override
 	public String toString() {
-		return "Book [id=" + bookId + ", Authors=" + authors + ", title=" + title + ", isbn=" + isbn + ", series=" + series
+		return "Book [id=" + bookId + ", Authors=" + authors + ", title=" + title + ", series=" + series
 				+ ", timesRead=" + timesRead + ", owned=" + owned + ", completion=" + completion + "]";
 	}
 
@@ -123,7 +115,6 @@ public class Book {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((series == null) ? 0 : series.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -137,13 +128,6 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (series == null) {
-			if (other.series != null)
-				return false;
-		}
-		else if (!series.equals(other.series)) {
-			return false;
-		}
 		if (title == null) {
 			if (other.title != null)
 				return false;

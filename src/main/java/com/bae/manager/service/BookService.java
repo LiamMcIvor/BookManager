@@ -30,7 +30,7 @@ public class BookService {
 	}
 
 	public Book createBook(Book book) {
-		verifyValidBook(book);
+		verifyValidBook(book, true);
 		return this.repo.save(book);
 	}
 
@@ -43,13 +43,16 @@ public class BookService {
 	}
 
 	public Book updateBook(Book book, long id) {
-		//verifyValidBook(book);
+		verifyValidBook(book, false);
 		Book toUpdate = findBookById(id);
+		if (!book.getTitle().equals(toUpdate.getTitle()) && findRepeatedBook(book)) {
+			throw new DuplicateValueException();
+		}
 		toUpdate.setTitle(book.getTitle());
 		toUpdate.setSeries(book.getSeries());
-		toUpdate.setIsbn(book.getIsbn());
 		toUpdate.setOwned(book.getOwned());
 		toUpdate.setCompletion(book.getCompletion());
+		toUpdate.setTimesRead(book.getTimesRead());
 		return this.repo.save(toUpdate);
 	}
 
@@ -57,23 +60,19 @@ public class BookService {
 		return this.repo.findById(id).orElseThrow(EntryNotFoundException::new);
 	}
 
-	public Boolean verifyValidBook(Book book) {
-		if (book.getTitle().length() > 250) {
+	public Boolean verifyValidBook(Book book, boolean newBook) {
+		if (book.getTitle().length() > 150) {
 			throw new InvalidEntryException();
 		}
-		else if (findRepeatedBook(book)) {
+		else if (book.getSeries().length() > 60) {
+			throw new InvalidEntryException();
+		}
+		else if (newBook && findRepeatedBook(book)) {
 			throw new DuplicateValueException();
-		}
-		else if (!StringUtils.isNumeric(book.getIsbn())) {
-			throw new InvalidEntryException();
-		}
-		else if (!(book.getIsbn().length() == 10 || book.getIsbn().length() == 13)) {
-			throw new InvalidEntryException();
 		}
 		else if (book.getTimesRead() < 0 || book.getTimesRead() > 1000) {
 			throw new InvalidEntryException();
 		}
-
 		return true;
 	}
 
