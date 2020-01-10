@@ -85,6 +85,7 @@ public class BookServiceIntegrationTests {
 		
 		assertEquals(updatedBook, this.service.updateBook(testBook2, this.testBookWithid.getId()));
 	}
+}
 	
 //	@Test
 //	public void verifyValidBook
