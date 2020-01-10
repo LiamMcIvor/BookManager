@@ -22,7 +22,7 @@ public class AuthorService {
 	}
 
 	public Author createAuthor(Author author) {
-		if (author.getPenName().length() > 250) {
+		if (author.getPenName().length() > 80) {
 			throw new InvalidEntryException();
 		} else if (findRepeatedAuthor(author)) {
 			throw new DuplicateValueException();

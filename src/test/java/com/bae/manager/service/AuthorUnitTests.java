@@ -47,8 +47,7 @@ public class AuthorUnitTests {
 	private long invalidId;
 
 	final long id = 1L;
-	private String length251 = "PebvtPIUTFWcyFFtucstLjqIhztILbbWHnoMZpfMupJsQjdqxDcpFfDtrJcdajvmqqocwlbzjROsLYcgZgWyboQPzxCdhVrvXnXJEXOhkzSGoEyeWFlkvHIkiDJIjsWRqZcVbpwZoRqsgdRVxDjWQvMPuIeYQnqxCDpdTkvaFnCdoPSYKWjPKIyOGbRJCurpbkoBgTmmc"
-			+ "XhAcsWAgQPahSNCcaHuvsHNruwYTgtDynDOswCtEuHRCfAxpAh";
+	private String length81 = "AACATCAAGAGGCTCGGTAGCTGCGTCGGAGCTAAGGTGTATCTGGCATGTTCCCATCCTAGGTGGCCTTCTCAGGAGTAk";
 
 	@Before
 	public void init() {
@@ -58,7 +57,7 @@ public class AuthorUnitTests {
 		this.testAuthorWithId.setId(id);
 		this.authorList.add(testAuthor);
 		this.authorList.add(testAuthor);
-		this.testAuthorFail = new Author(this.length251);
+		this.testAuthorFail = new Author(this.length81);
 		this.testAuthorFail.setId(id);
 		this.testAuthorFailWithId = new Author(testAuthorFail.getPenName());
 		this.testAuthorFailWithId.setId(id);

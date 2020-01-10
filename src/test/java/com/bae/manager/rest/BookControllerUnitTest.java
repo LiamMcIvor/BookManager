@@ -36,7 +36,7 @@ public class BookControllerUnitTest {
 	
 	private Book testBookWithId;
 	
-	private final long id = 1;
+	private final long id = 1L;
 
 	private Author testAuthor;
 
@@ -48,8 +48,8 @@ public class BookControllerUnitTest {
 	public void init() {
 		this.bookList = new ArrayList<>();
 		this.authorList = new ArrayList<>();
-		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
-		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBook = new Book("The Colour of Magic", "Discworld", 2, Owned.OWNED, Completion.READING);
+		this.testBookWithId = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookWithId.setId(id);
 		this.bookList.add(testBook);
 		this.testAuthor = new Author("Terry Pratchett");
@@ -87,22 +87,12 @@ public class BookControllerUnitTest {
 	
 	@Test
 	public void updateBookTest() {
-		Book newBook = new Book("The Color of Magic", "97800616855", "Diskworld", 2, Owned.OWNED, Completion.READ);
-		Book updatedBook = new Book(newBook.getTitle(), newBook.getIsbn(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		Book newBook = new Book("The Color of Magic", "Diskworld", 2, Owned.OWNED, Completion.READ);
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
 		updatedBook.setId(this.id);
 		when(this.service.updateBook(newBook, this.id)).thenReturn(updatedBook);
 		assertEquals(updatedBook, this.controller.updateBook(this.id, newBook));
 		verify(this.service, times(1)).updateBook(newBook, this.id);
-	}
-	
-	@Test
-	public void addAuthorToBookTest() {
-		this.testBookWithId.getAuthors().addAll(authorList);
-		
-		when(this.service.updateBookAuthors(this.id, this.authorList)).thenReturn(this.testBookWithId);
-		
-		assertEquals(this.testBook, this.controller.addAuthorToBook(this.id, this.authorList));
-		verify(this.service, times(1)).updateBookAuthors(this.id, this.authorList);
 	}
 	
 	@Test
