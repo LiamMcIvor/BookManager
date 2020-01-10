@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.bae.manager.exception.DuplicateValueException;
 import com.bae.manager.exception.EntryNotFoundException;
 import com.bae.manager.exception.InvalidEntryException;
