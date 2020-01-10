@@ -48,11 +48,13 @@ public class BookUnitTests {
 	
 	private final long id = 1L;
 	
+	private final long id2 = 2L;
+
 	private final String length151 = "GAATACCGATCATGATCCCCAACGTGCATTTACCAGAGGGTCATATTCTAAATAGGGTATTATGAGTCATCTGAATCTGTCCATGCGATTCGGGGCACCGATGTCGCGGACACGGTTTAAAATCCTATCAACCAGGTGACAATATGCCATC";
 	
 	private final String length61 = "CCACGTTTGTACCTAACCAGCGATTAGTAGTGATCTGGTTATTTGGATAGCGCTTTTTGTT";
 	
-	private long invalidId;
+	private final long invalidId = 3L;
 	
 	private Book testBookFail;
 	
@@ -68,20 +70,27 @@ public class BookUnitTests {
 	
 	private List<Author> authorList;
 
+	private Book testBook2;
+
+	private Book testBook2WithId;
+
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
 		this.authorList = new ArrayList<>();
 		this.testBook = new Book("The Colour of Magic", "Discworld", 2, Owned.OWNED, Completion.READING);
 		this.testBookWithId = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBook2 = new Book("Good Omens", "N/A", 4, Owned.WISHLIST, Completion.TO_READ);
+		this.testBook2WithId = new Book(testBook2.getTitle(), testBook2.getSeries(), testBook2.getTimesRead(), testBook2.getOwned(), testBook2.getCompletion());
+
 		this.testBookWithId.setId(id);
+		this.testBook2WithId.setId(id2);
 		this.bookList.add(testBook);
-		this.bookList.add(testBook);
+		this.bookList.add(testBook2);
 		this.testBookFail = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookFail.setId(id);
 		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
 		this.testBookFailWithId.setId(id);
-		this.invalidId = 2L;
 		
 		this.testAuthor = new Author("Terry Pratchett");
 		this.testAuthorWithId = new Author(testAuthor.getPenName());
@@ -160,13 +169,31 @@ public class BookUnitTests {
 		updatedBook.setId(this.id);
 		
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
-		when(this.repo.save(updatedBook)).thenReturn(updatedBook);
+		when(this.repo.save(newBook)).thenReturn(updatedBook);
 		
 		assertEquals(updatedBook, this.service.updateBook(newBook, this.id));
 		
 		verify(this.repo, times(1)).findById(this.id);
 		verify(this.repo, times(1)).save(updatedBook);
 		
+	}
+	
+	@Test
+	public void updateBookChangeToExistingAuthorTest() {
+		Book newBook = new Book(testBook2.getTitle(), testBook2.getSeries(), testBook2.getTimesRead(), testBook2.getOwned(), testBook2.getCompletion());
+		newBook.setId(this.id2);
+		newBook.setTitle(testBook.getTitle());
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		updatedBook.setId(this.id2);
+		
+		when(this.repo.findById(this.id2)).thenReturn(Optional.of(this.testBook2));
+		when(this.repo.findAll()).thenReturn(this.bookList);
+		
+		assertThrows(DuplicateValueException.class, () -> {
+			this.service.updateBook(newBook, this.id2);
+		});
+		verify(this.repo, times(1)).findById(this.id2);
+		verify(this.repo, times(1)).findAll();
 	}
 	
 	@Test

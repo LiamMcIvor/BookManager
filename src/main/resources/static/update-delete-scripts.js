@@ -1,7 +1,5 @@
 "use strict"
-// const popup = document.getElementById("popup");
 const close = document.getElementById("close");
-// const deletePopup = document.getElementById("deletePopup");
 const deleteClose = document.getElementById("deleteClose");
 const updateForm = document.getElementById("updateBookForm");
 const cancelDelete = document.getElementById("cancelDelete");

@@ -115,7 +115,6 @@ public class Book {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((series == null) ? 0 : series.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -129,13 +128,6 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (series == null) {
-			if (other.series != null)
-				return false;
-		}
-		else if (!series.equals(other.series)) {
-			return false;
-		}
 		if (title == null) {
 			if (other.title != null)
 				return false;
