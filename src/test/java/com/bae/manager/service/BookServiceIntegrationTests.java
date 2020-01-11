@@ -111,18 +111,18 @@ public class BookServiceIntegrationTests {
 	
 	@Test
 	public void getBooksTest() {
-		this.testBook2Withid = this.service.createBook(testBook2);
+		this.testBook2Withid = this.service.createBook(this.testBook2);
 		assertThat(Arrays.asList(new Book[] {this.testBookWithid, this.testBook2Withid})).isEqualTo(this.service.getAllBooks());
 	}
 	
 	@Test
 	public void findRepeatedBookExistsTest() {
-		assertTrue(this.service.findRepeatedBook(testBook));
+		assertTrue(this.service.findRepeatedBook(this.testBook));
 	}
 	
 	@Test
 	public void findRepeatedBookDoesNotExistTest() {
-		assertFalse(this.service.findRepeatedBook(testBook2));
+		assertFalse(this.service.findRepeatedBook(this.testBook2));
 	}
 	
 	@Test
