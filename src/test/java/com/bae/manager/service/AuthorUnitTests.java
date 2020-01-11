@@ -118,5 +118,22 @@ public class AuthorUnitTests {
 			this.service.findAuthorById(invalidId);
 		});
 	}
+	
+	@Test
+	public void deleteAuthorTest() {
+		when(this.repo.existsById(this.id)).thenReturn(true, false);
+		
+		assertFalse(this.service.deleteAuthor(this.id));
+		assertThrows(EntryNotFoundException.class, () -> {
+			this.service.deleteAuthor(this.id);
+		});
+		verify(this.repo, times(1)).deleteById(this.id);
+		verify(this.repo, times(3)).existsById(this.id);	}
+	
+	@Test
+	public void removeOrphanedAuthorsTest() {
+		when(this.service.getAllAuthors()).thenReturn(this.authorList);
+		when(this.service.delete)
+	}
 
 }

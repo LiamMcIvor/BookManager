@@ -206,7 +206,6 @@ public class BookUnitTests {
 		});
 		verify(this.repo, times(1)).deleteById(this.id);
 		verify(this.repo, times(3)).existsById(this.id);
-		
 	}
 	
 	@Test
@@ -230,7 +229,6 @@ public class BookUnitTests {
 		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.authorList));
 		verify(this.repo, times(1)).findById(this.id);
 		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
-
 	}
 	
 	@Test
