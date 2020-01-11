@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -225,5 +227,14 @@ public class BookServiceIntegrationTests {
 		List<Author> authors = Arrays.asList(new Author[] {this.testAuthorWithId, this.testAuthor2});
 		updatedBook.getAuthors().addAll(Arrays.asList(new Author[] {this.testAuthorWithId, this.testAuthorWithId2}));
 		assertThat(updatedBook).isEqualToComparingFieldByField(this.service.updateBookAuthors(this.testBookWithid.getId(), authors));		
+	}
+	
+	@Test
+	public void removeAllAuthorsTest() {
+		List<Author> authors = Arrays.asList(new Author[] {this.testAuthorWithId, this.testAuthor2});
+		Set<Author> emptyAuthors = new HashSet<>();
+		this.service.addAuthorToBook(this.testBookWithid.getId(), authors);
+		assertThat(emptyAuthors).isEqualTo(this.service.removeAllAuthors(this.testBookWithid.getId()));
+
 	}
 }

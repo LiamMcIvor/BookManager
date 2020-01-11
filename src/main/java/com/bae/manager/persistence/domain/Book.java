@@ -1,5 +1,6 @@
 package com.bae.manager.persistence.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -14,8 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.hibernate.validator.constraints.ISBN;
-
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
 
@@ -28,7 +27,7 @@ public class Book {
 
 	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "author_book_link", joinColumns = @JoinColumn(name = "bookId"), inverseJoinColumns = @JoinColumn(name = "AuthorId"))
-	private Set<Author> authors;
+	private Set<Author> authors = new HashSet<>();
 
 	private String title;
 	private String series;
@@ -104,6 +103,11 @@ public class Book {
 
 	public void setCompletion(Completion completion) {
 		this.completion = completion;
+	}
+	
+	public void removeAuthor(Author author) {
+		this.authors.remove(author);
+		author.getBooks().remove(this);
 	}
 
 	@Override

@@ -1,9 +1,6 @@
 package com.bae.manager.service;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,8 +53,8 @@ public class AuthorService {
 	public List<Author> removeOrphanedAuthors() {
 		List<Author> allAuthors = this.getAllAuthors();
 		for (Author author : allAuthors) {
-			System.out.println(author.getBooks());
 			if (author.getBooks() == null || author.getBooks().isEmpty()) {
+				System.out.println();
 				this.deleteAuthor(author.getId());
 			}
 		}

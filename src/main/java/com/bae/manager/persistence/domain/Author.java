@@ -1,9 +1,11 @@
 package com.bae.manager.persistence.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,9 +20,9 @@ public class Author {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long authorId;
 
-	@ManyToMany(mappedBy = "authors")
+	@ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
 	@JsonIgnore
-	private Set<Book> books;
+	private Set<Book> books = new HashSet<>();
 
 	@Column(unique = true)
 	private String penName;
@@ -58,8 +60,6 @@ public class Author {
 	public void setPenName(String penName) {
 		this.penName = penName;
 	}
-
-
 
 	@Override
 	public String toString() {
