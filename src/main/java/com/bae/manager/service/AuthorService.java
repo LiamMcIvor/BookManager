@@ -1,6 +1,9 @@
 package com.bae.manager.service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,25 @@ public class AuthorService {
 	
 	public Author findAuthorById(Long id) {
 		return this.repo.findById(id).orElseThrow(EntryNotFoundException::new);	
+	}
+
+	public boolean deleteAuthor(Long id) {
+		if (!this.repo.existsById(id)) {
+			throw new EntryNotFoundException();
+		}
+		this.repo.deleteById(id);
+		return this.repo.existsById(id);		
+	}
+
+	public List<Author> removeOrphanedAuthors() {
+		List<Author> allAuthors = this.getAllAuthors();
+		for (Author author : allAuthors) {
+			System.out.println(author.getBooks());
+			if (author.getBooks() == null || author.getBooks().isEmpty()) {
+				this.deleteAuthor(author.getId());
+			}
+		}
+		return this.getAllAuthors();
 	}
 
 }
