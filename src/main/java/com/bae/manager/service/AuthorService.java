@@ -30,7 +30,7 @@ public class AuthorService {
 		return this.repo.save(author);
 	}
 
-	public Boolean findRepeatedAuthor(Author author) {
+	public boolean findRepeatedAuthor(Author author) {
 		return this.getAllAuthors().contains(author);
 	}
 
@@ -54,7 +54,6 @@ public class AuthorService {
 		List<Author> allAuthors = this.getAllAuthors();
 		for (Author author : allAuthors) {
 			if (author.getBooks() == null || author.getBooks().isEmpty()) {
-				System.out.println();
 				this.deleteAuthor(author.getId());
 			}
 		}
