@@ -1,15 +1,16 @@
 package com.bae.manager.selenium.constants;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.LocalServerPort;
 
 public class Constants {
-	public static final String PATH = "C:\\Users\\Luke\\git\\BookManager\\src\\test\\resources\\chromedriver.exe";
-	public static final String PROPERTY = "webdriver.chrome.webdriver";
+	public static final String EXPLICIT_PATH = "C:\\Users\\Luke\\git\\BookManager\\src\\test\\resources\\chromedriver.exe";
+	public static final String PATH = "chromedriver";
+	public static final String PROPERTY = "webdriver.chrome.driver";
 	
-	@Value("${local.server.port")
+	@LocalServerPort
 	public static int port;
 	
-	public static final String HOST = "http://localhost:" + port;
+	public static final String HOST = "http://localhost:";
 	
 	public static final String INDEX = "/index.html";
 	
