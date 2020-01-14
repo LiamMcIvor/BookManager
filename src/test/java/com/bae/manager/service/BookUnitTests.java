@@ -9,8 +9,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -199,6 +201,7 @@ public class BookUnitTests {
 	@Test
 	public void deleteBookTest() {
 		when(this.repo.existsById(this.id)).thenReturn(true, false);
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(testBookWithId));
 		
 		assertFalse(this.service.deleteBook(this.id));
 		assertThrows(EntryNotFoundException.class, () -> {
@@ -206,7 +209,6 @@ public class BookUnitTests {
 		});
 		verify(this.repo, times(1)).deleteById(this.id);
 		verify(this.repo, times(3)).existsById(this.id);
-		
 	}
 	
 	@Test
@@ -230,7 +232,6 @@ public class BookUnitTests {
 		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.authorList));
 		verify(this.repo, times(1)).findById(this.id);
 		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
-
 	}
 	
 	@Test
@@ -244,13 +245,23 @@ public class BookUnitTests {
 		when(this.authorService.findRepeatedAuthor(this.testAuthor2)).thenReturn(true);
 		when(this.authorService.createAuthor(this.testAuthor)).thenReturn(this.testAuthorWithId);
 
-
 		assertEquals(this.testBookWithId, this.service.updateBookAuthors(this.id, this.authorList));
 		verify(this.repo, times(2)).findById(this.id);
 		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
 		verify(this.authorService, times(1)).findRepeatedAuthor(this.testAuthor);
 		verify(this.authorService, times(1)).findRepeatedAuthor(this.testAuthor2);
 		verify(this.authorService, times(1)).createAuthor(testAuthor);
+	}
+	
+	@Test
+	public void removeAllAuthorsTest() {
+		this.testBookWithId.getAuthors().add(this.testAuthorWithId);
+		this.testBookWithId.getAuthors().add(this.testAuthor2WithId);
+		Set<Author> emptyAuthors = new HashSet<>();
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+		
+		assertEquals(emptyAuthors, this.service.removeAllAuthors(this.testBookWithId.getId()));
+		verify(this.repo, times(1)).findById(this.id);
 	}
 
 }

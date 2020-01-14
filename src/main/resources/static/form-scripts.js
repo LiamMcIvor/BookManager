@@ -14,8 +14,7 @@ $(document).ready(function () {
 });
 
 function getAuthorsForSelect() {
-    axios.get("http://3.9.214.211:8181/BookManager/author/getAll")
-
+    axios.get(`${getLocation()}/author/getAll`)
         .then((response) => {
             console.log(response.status)
             populateAuthorsSelect(response.data);

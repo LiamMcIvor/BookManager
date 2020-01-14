@@ -63,7 +63,7 @@ function constructTableBody(bookList) {
 };
 
 function getBooks(clickRow) {
-    axios.get("http://3.9.214.211:8181/BookManager/book/getAll")
+    axios.get(`${getLocation()}/book/getAll`)
         .then((response) => {
             console.log(response.status)
             constructTableBody(response.data);
@@ -93,7 +93,7 @@ function clickable() {
             $("#deletePopupText", deletePopup).html(`Are you sure you want to delete <br> ${title} <br> from your book collection?`);
             popup.style.display = "none";
             deletePopup.style.display = "block";
-            $("#delete", deletePopup).on("click", function() {
+            $("#deleteConfirm", deletePopup).on("click", function() {
                 deleteBook(id, title);
                 deletePopup.style.display = "none";
             });

@@ -35,9 +35,9 @@
       </div>
       <div class="collapse navbar-collapse" id="pageNavbar">
         <ul class="nav navbar-nav">
-          <li><a href="./index.html">Home</a></li>
-          <li><a href="./add-books.html">Add Books</a></li>
-          <li class="active"><a href="./update-books.html">Update/Delete Books</a></li>
+          <li><a id="index" href="./index.html">Home</a></li>
+          <li><a id="addBooks" href="./add-books.html">Add Books</a></li>
+          <li class="active"><a id="updateDeleteBooks" href="./update-books.html">Update/Delete Books</a></li>
         </ul>
       </div>
     </div>
@@ -111,7 +111,7 @@
           name="timesRead" required min="0" max="1000">
       </div>
 
-      <button type="submit" class="btn btn-default">Submit</button>
+      <button id="formSubmit" type="submit" class="btn btn-default">Submit</button>
     </form>
   </div>
 
@@ -140,7 +140,7 @@
         <h2 id="deletePopupText" class="modal-text"></h2>
       </div>
       <div>
-        <button id="delete" class="btn modal-button modal-text">
+        <button id="deleteConfirm" class="btn modal-button modal-text">
           <span id="bookId" hidden></span>Yes
         </button>
         <button id="cancelDelete" class="modal-button btn modal-text">No</button>

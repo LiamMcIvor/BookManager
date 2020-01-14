@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.persistence.PreRemove;
 
 import com.bae.manager.exception.DuplicateValueException;
 import com.bae.manager.exception.EntryNotFoundException;
@@ -80,7 +82,9 @@ public class BookService {
 		if (!this.repo.existsById(id)) {
 			throw new EntryNotFoundException();
 		}
+		this.removeAllAuthors(id);
 		this.repo.deleteById(id);
+		this.authorService.removeOrphanedAuthors();
 		return this.repo.existsById(id);
 	}
 
@@ -93,15 +97,28 @@ public class BookService {
 	}
 	
 	public Book updateBookAuthors(long id, Collection<Author> authors) {
-		Book toUpdate = this.findBookById(id);
-		toUpdate.getAuthors().clear();
+		this.removeAllAuthors(id);
 
 		for(Author author : authors) {
 			if(!this.authorService.findRepeatedAuthor(author)) {
 				author = this.authorService.createAuthor(author);
 			}
 		}
-		return this.addAuthorToBook(id, authors);
+		
+		Book returningBook = this.addAuthorToBook(id, authors);
+		this.authorService.removeOrphanedAuthors();
+
+		return returningBook;
+	}
+	
+	@PreRemove
+	public Set<Author> removeAllAuthors(long bookId) {
+		Book removeFrom = this.findBookById(bookId);
+		Set<Author> removeFromAuthors = new HashSet<>(removeFrom.getAuthors());
+		for (Author author : removeFromAuthors) {
+			removeFrom.removeAuthor(author);
+		}
+		return removeFrom.getAuthors();
 	}
 
 }
