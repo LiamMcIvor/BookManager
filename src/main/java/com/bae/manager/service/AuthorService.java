@@ -22,7 +22,7 @@ public class AuthorService {
 	}
 
 	public Author createAuthor(Author author) {
-		if (author.getPenName().length() > 250) {
+		if (author.getPenName().length() > 80) {
 			throw new InvalidEntryException();
 		} else if (findRepeatedAuthor(author)) {
 			throw new DuplicateValueException();
@@ -30,7 +30,7 @@ public class AuthorService {
 		return this.repo.save(author);
 	}
 
-	public Boolean findRepeatedAuthor(Author author) {
+	public boolean findRepeatedAuthor(Author author) {
 		return this.getAllAuthors().contains(author);
 	}
 
@@ -40,6 +40,24 @@ public class AuthorService {
 	
 	public Author findAuthorById(Long id) {
 		return this.repo.findById(id).orElseThrow(EntryNotFoundException::new);	
+	}
+
+	public boolean deleteAuthor(Long id) {
+		if (!this.repo.existsById(id)) {
+			throw new EntryNotFoundException();
+		}
+		this.repo.deleteById(id);
+		return this.repo.existsById(id);		
+	}
+
+	public List<Author> removeOrphanedAuthors() {
+		List<Author> allAuthors = this.getAllAuthors();
+		for (Author author : allAuthors) {
+			if (author.getBooks() == null || author.getBooks().isEmpty()) {
+				this.deleteAuthor(author.getId());
+			}
+		}
+		return this.getAllAuthors();
 	}
 
 }

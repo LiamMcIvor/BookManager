@@ -3,13 +3,17 @@ package com.bae.manager.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
+import javax.persistence.PreRemove;
 
 import com.bae.manager.exception.DuplicateValueException;
 import com.bae.manager.exception.EntryNotFoundException;
 import com.bae.manager.exception.InvalidEntryException;
+import com.bae.manager.persistence.domain.Author;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
 
@@ -17,15 +21,18 @@ import com.bae.manager.persistence.repo.BookRepo;
 public class BookService {
 
 	private BookRepo repo;
-
+		
+	private AuthorService authorService;
+	
 	@Autowired
-	public BookService(BookRepo repo) {
+	public BookService(BookRepo repo, AuthorService authorService) {
 		super();
 		this.repo = repo;
+		this.authorService = authorService;
 	}
 
 	public Book createBook(Book book) {
-		verifyValidBook(book);
+		verifyValidBook(book, true);
 		return this.repo.save(book);
 	}
 
@@ -38,13 +45,16 @@ public class BookService {
 	}
 
 	public Book updateBook(Book book, long id) {
-		verifyValidBook(book);
+		verifyValidBook(book, false);
 		Book toUpdate = findBookById(id);
+		if (!book.getTitle().equals(toUpdate.getTitle()) && findRepeatedBook(book)) {
+			throw new DuplicateValueException();
+		}
 		toUpdate.setTitle(book.getTitle());
 		toUpdate.setSeries(book.getSeries());
-		toUpdate.setIsbn(book.getIsbn());
 		toUpdate.setOwned(book.getOwned());
 		toUpdate.setCompletion(book.getCompletion());
+		toUpdate.setTimesRead(book.getTimesRead());
 		return this.repo.save(toUpdate);
 	}
 
@@ -52,23 +62,19 @@ public class BookService {
 		return this.repo.findById(id).orElseThrow(EntryNotFoundException::new);
 	}
 
-	public Boolean verifyValidBook(Book book) {
-		if (book.getTitle().length() > 250) {
+	public Boolean verifyValidBook(Book book, boolean newBook) {
+		if (book.getTitle().length() > 150) {
 			throw new InvalidEntryException();
 		}
-		else if (findRepeatedBook(book)) {
+		else if (book.getSeries().length() > 60) {
+			throw new InvalidEntryException();
+		}
+		else if (newBook && findRepeatedBook(book)) {
 			throw new DuplicateValueException();
-		}
-		else if (!StringUtils.isNumeric(book.getIsbn())) {
-			throw new InvalidEntryException();
-		}
-		else if (!(book.getIsbn().length() == 10 || book.getIsbn().length() == 13)) {
-			throw new InvalidEntryException();
 		}
 		else if (book.getTimesRead() < 0 || book.getTimesRead() > 1000) {
 			throw new InvalidEntryException();
 		}
-
 		return true;
 	}
 
@@ -76,9 +82,43 @@ public class BookService {
 		if (!this.repo.existsById(id)) {
 			throw new EntryNotFoundException();
 		}
+		this.removeAllAuthors(id);
 		this.repo.deleteById(id);
+		this.authorService.removeOrphanedAuthors();
 		return this.repo.existsById(id);
 	}
+
+	public Book addAuthorToBook(long id, Collection<Author> authors) {
+		Book toUpdate = this.findBookById(id);
+
+		toUpdate.getAuthors().addAll((authors));
+		
+		return this.repo.saveAndFlush(toUpdate);
+	}
 	
+	public Book updateBookAuthors(long id, Collection<Author> authors) {
+		this.removeAllAuthors(id);
+
+		for(Author author : authors) {
+			if(!this.authorService.findRepeatedAuthor(author)) {
+				author = this.authorService.createAuthor(author);
+			}
+		}
+		
+		Book returningBook = this.addAuthorToBook(id, authors);
+		this.authorService.removeOrphanedAuthors();
+
+		return returningBook;
+	}
+	
+	@PreRemove
+	public Set<Author> removeAllAuthors(long bookId) {
+		Book removeFrom = this.findBookById(bookId);
+		Set<Author> removeFromAuthors = new HashSet<>(removeFrom.getAuthors());
+		for (Author author : removeFromAuthors) {
+			removeFrom.removeAuthor(author);
+		}
+		return removeFrom.getAuthors();
+	}
 
 }

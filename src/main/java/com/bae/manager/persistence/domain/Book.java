@@ -1,9 +1,13 @@
 package com.bae.manager.persistence.domain;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,15 +22,14 @@ import com.bae.manager.enums.Owned;
 public class Book {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long bookId;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
 	@JoinTable(name = "author_book_link", joinColumns = @JoinColumn(name = "bookId"), inverseJoinColumns = @JoinColumn(name = "AuthorId"))
-	private Set<Author> authors;
+	private Set<Author> authors = new HashSet<>();
 
 	private String title;
-	private String isbn;
 	private String series;
 	private int timesRead;
 	private Owned owned;
@@ -36,14 +39,14 @@ public class Book {
 		super();
 	}
 
-	public Book(String title, String isbn, String series, int timesRead, Owned owned, Completion completion) {
+	public Book(String title, String series, int timesRead, Owned owned, Completion completion, Author...authors) {
 		super();
 		this.title = title;
-		this.isbn = isbn;
 		this.series = series;
 		this.timesRead = timesRead;
 		this.owned = owned;
 		this.completion = completion;
+		this.authors = Stream.of(authors).collect(Collectors.toSet());
 	}
 
 	public Long getId() {
@@ -68,14 +71,6 @@ public class Book {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
 	}
 
 	public String getSeries() {
@@ -109,10 +104,15 @@ public class Book {
 	public void setCompletion(Completion completion) {
 		this.completion = completion;
 	}
+	
+	public void removeAuthor(Author author) {
+		this.authors.remove(author);
+		author.getBooks().remove(this);
+	}
 
 	@Override
 	public String toString() {
-		return "Book [id=" + bookId + ", Authors=" + authors + ", title=" + title + ", isbn=" + isbn + ", series=" + series
+		return "Book [id=" + bookId + ", Authors=" + authors + ", title=" + title + ", series=" + series
 				+ ", timesRead=" + timesRead + ", owned=" + owned + ", completion=" + completion + "]";
 	}
 
@@ -120,9 +120,6 @@ public class Book {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((authors == null) ? 0 : authors.hashCode());
-		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
-		result = prime * result + ((isbn == null) ? 0 : isbn.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
@@ -136,22 +133,15 @@ public class Book {
 		if (getClass() != obj.getClass())
 			return false;
 		Book other = (Book) obj;
-		if (bookId == null) {
-			if (other.bookId != null)
-				return false;
-		} else if (!bookId.equals(other.bookId))
-			return false;
-		if (isbn == null) {
-			if (other.isbn != null)
-				return false;
-		} else if (!isbn.equals(other.isbn))
-			return false;
 		if (title == null) {
 			if (other.title != null)
 				return false;
-		} else if (!title.equals(other.title))
+		}
+		else if (!title.equals(other.title)) {
 			return false;
+		}
 		return true;
 	}
+
 
 }

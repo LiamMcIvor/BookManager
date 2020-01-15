@@ -9,25 +9,28 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import com.bae.manager.enums.Completion;
 import com.bae.manager.enums.Owned;
 import com.bae.manager.exception.DuplicateValueException;
 import com.bae.manager.exception.EntryNotFoundException;
 import com.bae.manager.exception.InvalidEntryException;
+import com.bae.manager.persistence.domain.Author;
 import com.bae.manager.persistence.domain.Book;
 import com.bae.manager.persistence.repo.BookRepo;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class BookUnitTests {
 	
 	@InjectMocks
@@ -35,6 +38,9 @@ public class BookUnitTests {
 
 	@Mock
 	private BookRepo repo;
+	
+	@Mock
+	private AuthorService authorService;
 	
 	private List<Book> bookList;
 	
@@ -44,28 +50,59 @@ public class BookUnitTests {
 	
 	private final long id = 1L;
 	
-	private String length251 = "PebvtPIUTFWcyFFtucstLjqIhztILbbWHnoMZpfMupJsQjdqxDcpFfDtrJcdajvmqqocwlbzjROsLYcgZgWyboQPzxCdhVrvXnXJEXOhkzSGoEyeWFlkvHIkiDJIjsWRqZcVbpwZoRqsgdRVxDjWQvMPuIeYQnqxCDpdTkvaFnCdoPSYKWjPKIyOGbRJCurpbkoBgTmmc"
-			+ "XhAcsWAgQPahSNCcaHuvsHNruwYTgtDynDOswCtEuHRCfAxpAh";
+	private final long id2 = 2L;
+
+	private final String length151 = "GAATACCGATCATGATCCCCAACGTGCATTTACCAGAGGGTCATATTCTAAATAGGGTATTATGAGTCATCTGAATCTGTCCATGCGATTCGGGGCACCGATGTCGCGGACACGGTTTAAAATCCTATCAACCAGGTGACAATATGCCATC";
 	
-	private long invalidId;
+	private final String length61 = "CCACGTTTGTACCTAACCAGCGATTAGTAGTGATCTGGTTATTTGGATAGCGCTTTTTGTT";
+	
+	private final long invalidId = 3L;
 	
 	private Book testBookFail;
 	
 	private Book testBookFailWithId;
 
+	private Author testAuthor;
+
+	private Author testAuthorWithId;
+	
+	private Author testAuthor2;
+	
+	private Author testAuthor2WithId;
+	
+	private List<Author> authorList;
+
+	private Book testBook2;
+
+	private Book testBook2WithId;
+
 	@Before
 	public void init() {
 		this.bookList = new ArrayList<>();
-		this.testBook = new Book("The Colour of Magic", "9780061685965", "Discworld", 2, Owned.OWNED, Completion.READING);
-		this.testBookWithId = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.authorList = new ArrayList<>();
+		this.testBook = new Book("The Colour of Magic", "Discworld", 2, Owned.OWNED, Completion.READING);
+		this.testBookWithId = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.testBook2 = new Book("Good Omens", "N/A", 4, Owned.WISHLIST, Completion.TO_READ);
+		this.testBook2WithId = new Book(testBook2.getTitle(), testBook2.getSeries(), testBook2.getTimesRead(), testBook2.getOwned(), testBook2.getCompletion());
+
 		this.testBookWithId.setId(id);
+		this.testBook2WithId.setId(id2);
 		this.bookList.add(testBook);
-		this.bookList.add(testBook);
-		this.testBookFail = new Book(testBook.getTitle(), testBook.getIsbn(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
+		this.bookList.add(testBook2);
+		this.testBookFail = new Book(testBook.getTitle(), testBook.getSeries(), testBook.getTimesRead(), testBook.getOwned(), testBook.getCompletion());
 		this.testBookFail.setId(id);
-		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getIsbn(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
+		this.testBookFailWithId = new Book(testBookFail.getTitle(), testBookFail.getSeries(), testBookFail.getTimesRead(), testBookFail.getOwned(), testBookFail.getCompletion());
 		this.testBookFailWithId.setId(id);
-		this.invalidId = 2L;
+		
+		this.testAuthor = new Author("Terry Pratchett");
+		this.testAuthorWithId = new Author(testAuthor.getPenName());
+		this.testAuthorWithId.setId(this.id);
+		this.testAuthor2 = new Author("Neil Gaiman");
+		this.testAuthor2WithId = new Author(testAuthor2.getPenName());
+		this.testAuthor2WithId.setId(this.invalidId);
+		this.authorList.add(testAuthor);
+		this.authorList.add(testAuthor2WithId);
+
 	}
 
 	@Test
@@ -77,10 +114,9 @@ public class BookUnitTests {
 	
 	@Test
 	public void duplicateBookTest() {
+		testBookFail.setTitle("The Color of Magik");
 		when(this.repo.findAll()).thenReturn(this.bookList);
 		assertTrue(this.service.findRepeatedBook(this.testBook));
-		System.out.println(this.testBook);
-		System.out.println(this.testBookFail);
 		assertFalse(this.service.findRepeatedBook(this.testBookFail));
 		verify(this.repo, times(2)).findAll();
 		}
@@ -96,27 +132,15 @@ public class BookUnitTests {
 	
 	@Test
 	public void titleTooLongTest() {
-		this.testBookFail.setTitle(length251);
+		this.testBookFail.setTitle(length151);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
 	}
 	
 	@Test
-	public void isbnRulesTest() {
-		this.testBookFail.setIsbn("12");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("10258745212");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("12675963415872");
-		assertThrows(InvalidEntryException.class, () -> {
-			this.service.createBook(this.testBookFail);
-		});
-		this.testBookFail.setIsbn("1j2");
+	public void seriesTooLongTest() {
+		this.testBookFail.setSeries(length61);
 		assertThrows(InvalidEntryException.class, () -> {
 			this.service.createBook(this.testBookFail);
 		});
@@ -142,12 +166,12 @@ public class BookUnitTests {
 	
 	@Test
 	public void updateBooksTest() {
-		Book newBook = new Book("The color of Magic", "9752368741", "DiskWorld", 3, Owned.WISHLIST, Completion.TO_READ);
-		Book updatedBook = new Book(newBook.getTitle(), newBook.getIsbn(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		Book newBook = new Book("The color of Magic", "DiskWorld", 3, Owned.WISHLIST, Completion.TO_READ);
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
 		updatedBook.setId(this.id);
 		
 		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
-		when(this.repo.save(updatedBook)).thenReturn(updatedBook);
+		when(this.repo.save(newBook)).thenReturn(updatedBook);
 		
 		assertEquals(updatedBook, this.service.updateBook(newBook, this.id));
 		
@@ -157,8 +181,27 @@ public class BookUnitTests {
 	}
 	
 	@Test
+	public void updateBookChangeToExistingAuthorTest() {
+		Book newBook = new Book(testBook2.getTitle(), testBook2.getSeries(), testBook2.getTimesRead(), testBook2.getOwned(), testBook2.getCompletion());
+		newBook.setId(this.id2);
+		newBook.setTitle(testBook.getTitle());
+		Book updatedBook = new Book(newBook.getTitle(), newBook.getSeries(), newBook.getTimesRead(), newBook.getOwned(), newBook.getCompletion());
+		updatedBook.setId(this.id2);
+		
+		when(this.repo.findById(this.id2)).thenReturn(Optional.of(this.testBook2));
+		when(this.repo.findAll()).thenReturn(this.bookList);
+		
+		assertThrows(DuplicateValueException.class, () -> {
+			this.service.updateBook(newBook, this.id2);
+		});
+		verify(this.repo, times(1)).findById(this.id2);
+		verify(this.repo, times(1)).findAll();
+	}
+	
+	@Test
 	public void deleteBookTest() {
 		when(this.repo.existsById(this.id)).thenReturn(true, false);
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(testBookWithId));
 		
 		assertFalse(this.service.deleteBook(this.id));
 		assertThrows(EntryNotFoundException.class, () -> {
@@ -166,7 +209,6 @@ public class BookUnitTests {
 		});
 		verify(this.repo, times(1)).deleteById(this.id);
 		verify(this.repo, times(3)).existsById(this.id);
-		
 	}
 	
 	@Test
@@ -180,5 +222,46 @@ public class BookUnitTests {
 		verify(this.repo, times(1)).findById(this.id);
 	}
 	
+	@Test
+	public void addAuthorToBookTest() {
+		this.testBookWithId.getAuthors().add(this.testAuthor);
+		
+		when(this.repo.saveAndFlush(this.testBookWithId)).thenReturn(this.testBookWithId);
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+		
+		assertEquals(this.testBookWithId, this.service.addAuthorToBook(this.id, this.authorList));
+		verify(this.repo, times(1)).findById(this.id);
+		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
+	}
+	
+	@Test
+	public void updateBookAuthors() {
+		this.testBookWithId.getAuthors().add(this.testAuthorWithId);
+		this.testBookWithId.getAuthors().add(this.testAuthor2WithId);
+		
+		when(this.repo.saveAndFlush(this.testBookWithId)).thenReturn(this.testBookWithId);
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+		when(this.authorService.findRepeatedAuthor(this.testAuthor)).thenReturn(false);
+		when(this.authorService.findRepeatedAuthor(this.testAuthor2)).thenReturn(true);
+		when(this.authorService.createAuthor(this.testAuthor)).thenReturn(this.testAuthorWithId);
+
+		assertEquals(this.testBookWithId, this.service.updateBookAuthors(this.id, this.authorList));
+		verify(this.repo, times(2)).findById(this.id);
+		verify(this.repo, times(1)).saveAndFlush(this.testBookWithId);
+		verify(this.authorService, times(1)).findRepeatedAuthor(this.testAuthor);
+		verify(this.authorService, times(1)).findRepeatedAuthor(this.testAuthor2);
+		verify(this.authorService, times(1)).createAuthor(testAuthor);
+	}
+	
+	@Test
+	public void removeAllAuthorsTest() {
+		this.testBookWithId.getAuthors().add(this.testAuthorWithId);
+		this.testBookWithId.getAuthors().add(this.testAuthor2WithId);
+		Set<Author> emptyAuthors = new HashSet<>();
+		when(this.repo.findById(this.id)).thenReturn(Optional.of(this.testBookWithId));
+		
+		assertEquals(emptyAuthors, this.service.removeAllAuthors(this.testBookWithId.getId()));
+		verify(this.repo, times(1)).findById(this.id);
+	}
 
 }

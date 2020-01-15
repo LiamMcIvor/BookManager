@@ -1,0 +1,43 @@
+.body-book {
+    padding-top: 70px;
+    background-image: url("./books-background.jpeg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+.custom-table-header {
+    background-color: rgba(247, 243, 237, 0.9);
+}
+.custom-table-body {
+    background-color: rgba(247, 243, 237, 0.5);
+}
+.custom-form-background {
+    background-color: rgba(247, 243, 237, 0.6);
+    padding-bottom: 15px;
+}
+.blank-table-background {
+    background-color: rgba(247, 243, 237, 0.6);
+    padding: 15px;
+    text-align: center;
+}
+.update-delete-modal {
+    background-color: rgba(247, 243, 237, 0.6);
+    text-align: center;
+}
+.update-delete-modal-content {
+    padding: 10px 10px 20px;
+    width: fit-content;
+    margin: 100px auto;
+}
+.modal-text-div {
+    padding-bottom: 10px;
+}
+.modal-text {
+    font-weight: bold;
+}
+.modal-button {
+    padding-top: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 0px;
+}

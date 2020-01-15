@@ -1,23 +1,30 @@
 package com.bae.manager.persistence.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Author {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long authorId;
 
-	@ManyToMany(mappedBy = "authors")
-	private Set<Book> books;
+	@ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<Book> books = new HashSet<>();
 
+	@Column(unique = true)
 	private String penName;
 	
 	
@@ -54,8 +61,6 @@ public class Author {
 		this.penName = penName;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "Author [Author ID = " + authorId + ", Pen Name = " + penName + "]";
@@ -81,8 +86,10 @@ public class Author {
 		if (penName == null) {
 			if (other.penName != null)
 				return false;
-		} else if (!penName.equals(other.penName))
+		}
+		else if (!penName.equals(other.penName)) {
 			return false;
+		}
 		return true;
 	}
 
