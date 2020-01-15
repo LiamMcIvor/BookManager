@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Book Manager - Home</title>
+  <link rel="shortcut icon" href="./bookStack.png" type="image/x-icon" />
+
+  <link rel="stylesheet" href="./stylesheet.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap.css"/>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.bootstrap.js"></script>
+</head>
+
+<body class="body-book" onload="getBooks(false)">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#pageNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="#" class="navbar-brand">Book Manager</a>
+      </div>
+      <div class="collapse navbar-collapse" id="pageNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a id="index"href="./index.html">Home</a></li>
+          <li><a id="addBooks" href="./add-books.html">Add Books</a></li>
+          <li><a id="updateDeleteBooks" href="./update-books.html">Update/Delete Books</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container" id="bookTableContainer">
+    <table id="bookTable" class="table table-hover" hidden>
+      <thead class="custom-table-header">
+        <tr>
+          <th>Title</th>
+          <th>Author(s)</th>
+          <th>Series</th>
+          <th>Owned/Wishlist</th>
+          <th>Completion</th>
+          <th>Times Read</th>
+        </tr>
+      </thead>
+      <tbody id="bookTableBody" class="custom-table-body"></tbody>
+    </table>
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="./requests.js"></script>
+  <script src="./table-scripts.js"></script>
+</body>
+
+</html>
