@@ -50,6 +50,8 @@ public class FrontEndTests {
 	private String completion = "READING";
 	private String series = "N/A";
 	private String timesRead = "25";
+	
+	private String location;
 		
 	@Before
 	public void startup() throws Exception {
@@ -58,11 +60,12 @@ public class FrontEndTests {
 		options.setHeadless(true);
 		this.driver = new ChromeDriver(options);	
 		this.driver.manage().window().setSize(new Dimension(1600, 700));
-		this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().implicitlyWait(10L, TimeUnit.SECONDS);
 		this.indexPage = PageFactory.initElements(this.driver, IndexPage.class);
 		this.updatePage = PageFactory.initElements(this.driver, UpdateDeleteBooksPage.class);
 		this.navbar = PageFactory.initElements(this.driver, Navbar.class);
 		this.form = PageFactory.initElements(this.driver, Form.class);
+		this.location = Constants.HOST + port + "/BookManager";
 	}
 	
 	@After
@@ -73,34 +76,34 @@ public class FrontEndTests {
 	@Test
 	public void changePageTest() {
 		
-		this.driver.get(Constants.HOST + port);
+		this.driver.get(this.location);
 		this.navbar.navigateToIndex();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.INDEX);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.INDEX);
 		
 		this.navbar.navigateToAddBooks();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.ADD_BOOKS);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.ADD_BOOKS);
 		this.navbar.navigateToAddBooks();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.ADD_BOOKS);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.ADD_BOOKS);
 		this.navbar.navigateToIndex();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.INDEX);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.INDEX);
 		
 		this.navbar.navigateToUpdateBooks();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.UPDATE_DELETE_BOOKS);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.UPDATE_DELETE_BOOKS);
 		this.navbar.navigateToUpdateBooks();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.UPDATE_DELETE_BOOKS);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.UPDATE_DELETE_BOOKS);
 		this.navbar.navigateToIndex();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.INDEX);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.INDEX);
 		
 		this.navbar.navigateToAddBooks();
 		this.navbar.navigateToUpdateBooks();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.UPDATE_DELETE_BOOKS);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.UPDATE_DELETE_BOOKS);
 		this.navbar.navigateToAddBooks();
-		assertEquals(driver.getCurrentUrl(), Constants.HOST + port + Constants.ADD_BOOKS);
+		assertEquals(driver.getCurrentUrl(), this.location + Constants.ADD_BOOKS);
 	}
 	
 	@Test
 	public void aGetBooks() {
-		this.driver.get(Constants.HOST + port);
+		this.driver.get(this.location);
 		assertEquals("There Are Currently No Saved Books", this.indexPage.getEmptyBookHeader());
 		
 		this.navbar.navigateToUpdateBooks();
@@ -109,7 +112,7 @@ public class FrontEndTests {
 	
 	@Test
 	public void addAndDeleteBooksTest() throws InterruptedException {
-		this.driver.get(Constants.HOST + port + Constants.ADD_BOOKS);
+		this.driver.get(this.location + Constants.ADD_BOOKS);
 		
 		this.form.enterTitle(this.title);
 		this.form.enterAuthor(this.testAuthor1);
@@ -148,7 +151,7 @@ public class FrontEndTests {
 	
 	@Test
 	public void addAndUpdateBookTest() throws InterruptedException {
-		this.driver.get(Constants.HOST + port + Constants.ADD_BOOKS);
+		this.driver.get(this.location + Constants.ADD_BOOKS);
 		
 		this.form.enterTitle(this.title);
 		this.form.enterAuthor(this.testAuthor1);

@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,8 +57,11 @@ public class AuthorControllerIntegrationTests {
 		this.testAuthor2 = new Author("Neil Gaiman");
 		this.testAuthor2WithId = new Author(this.testAuthor2.getPenName());
 		this.testAuthor2WithId.setId(this.id + 1);
-		
-		
+	}
+	
+	@After
+	public void tearDown() {
+		this.repo.deleteAll();
 	}
 	
 	@Test

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,6 +65,12 @@ public class BookControllerIntegrationTests {
 		this.testBook2 = new Book("Good Omens", "N/A", 0, Owned.WISHLIST, Completion.TO_READ);
 		this.testBook2WithId = new Book(this.testBook2.getTitle(), this.testBook2.getSeries(), this.testBook2.getTimesRead(), this.testBook2.getOwned(), this.testBook2.getCompletion());
 		this.testBook2WithId.setId(this.id + 1L);
+	}
+	
+	@After
+	public void tearDown() {
+		this.repo.deleteAll();
+		this.authorRepo.deleteAll();
 	}
 	
 	@Test
