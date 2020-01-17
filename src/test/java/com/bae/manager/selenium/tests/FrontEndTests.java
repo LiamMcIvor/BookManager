@@ -15,6 +15,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -51,6 +54,11 @@ public class FrontEndTests {
 	private String series = "N/A";
 	private String timesRead = "25";
 	
+	@Value("${server.servlet.context-path}")
+	private String CONTEXT;
+	
+	private WebDriverWait wait;
+	
 	private String location;
 		
 	@Before
@@ -65,7 +73,8 @@ public class FrontEndTests {
 		this.updatePage = PageFactory.initElements(this.driver, UpdateDeleteBooksPage.class);
 		this.navbar = PageFactory.initElements(this.driver, Navbar.class);
 		this.form = PageFactory.initElements(this.driver, Form.class);
-		this.location = Constants.HOST + port + "/BookManager";
+		this.location = Constants.HOST + port + CONTEXT;
+		this.wait = new WebDriverWait(this.driver, 10L);
 	}
 	
 	@After
@@ -123,7 +132,7 @@ public class FrontEndTests {
 		this.form.enterTimesRead(this.timesRead);
 		this.form.submit();
 		
-		Thread.sleep(1000L);
+		this.wait.until(ExpectedConditions.alertIsPresent());
 		assertEquals(this.title + " Has Been Created", this.driver.switchTo().alert().getText());
 		
 		this.driver.switchTo().alert().accept();
@@ -143,7 +152,7 @@ public class FrontEndTests {
 		this.updatePage.clickDeleteRow1();
 		assertEquals("Are you sure you want to delete\n" +this.title + "\nfrom your book collection?", this.updatePage.getDeleteText());
 		this.updatePage.clickDeleteConfirmRow1();
-		Thread.sleep(1000L);
+		this.wait.until(ExpectedConditions.alertIsPresent());
 		assertEquals(this.title + " Has Been Deleted", this.driver.switchTo().alert().getText());
 		this.driver.switchTo().alert().accept();
 		assertEquals("There Are Currently No Saved Books", this.updatePage.getEmptyBooksHeader());
@@ -162,7 +171,7 @@ public class FrontEndTests {
 		this.form.enterTimesRead(this.timesRead);
 		this.form.submit();
 		
-		Thread.sleep(1000L);
+		this.wait.until(ExpectedConditions.alertIsPresent());
 		this.driver.switchTo().alert().accept();
 		
 		this.navbar.navigateToUpdateBooks();
@@ -183,7 +192,7 @@ public class FrontEndTests {
 		this.form.selectToReadRadio();
 		this.form.submit();
 		
-		Thread.sleep(1000L);
+		this.wait.until(ExpectedConditions.alertIsPresent());
 		assertEquals(this.title + " Has Been Updated", this.driver.switchTo().alert().getText());
 		this.driver.switchTo().alert().accept();
 		
