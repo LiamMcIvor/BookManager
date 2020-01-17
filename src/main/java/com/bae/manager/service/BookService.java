@@ -101,7 +101,7 @@ public class BookService {
 
 		for(Author author : authors) {
 			if(!this.authorService.findRepeatedAuthor(author)) {
-				author = this.authorService.createAuthor(author);
+				this.authorService.createAuthor(author);
 			}
 		}
 		
