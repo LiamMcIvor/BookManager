@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,6 +81,12 @@ public class BookServiceIntegrationTests {
 		this.testBook2Withid = new Book(this.testBook2.getTitle(), this.testBook2.getSeries(), this.testBook2.getTimesRead(), this.testBook2.getOwned(), this.testBook2.getCompletion());
 		this.testBook2Withid.setId(this.id);
 		this.testBookWithid = this.repo.save(this.testBook);		
+	}
+	
+	@After
+	public void tearDown() {
+		this.repo.deleteAll();
+		this.authorRepo.deleteAll();
 	}
 	
 	@Test
