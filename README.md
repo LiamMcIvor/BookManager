@@ -48,8 +48,16 @@ I want to be able to manage my entire collection and have a record of any I want
 <a name="erd"></a>
 ### Entity Relationship Diagrams
 
+![InitialERD](./documentation/InitialERD.png)
+Initial ERD
+
+![FinalERD](./documentation/FinalERD.png)
+Final ERD
+
 <a name="overall"></a>
 ### Overall Architecture
+
+![Architecture](./documentation/Architecture.png)
 
 
 <a name="tech"></a>
