@@ -158,7 +158,11 @@ The update feature got extended to every field available to the user and was imp
 <a name="deployment"></a>
 ## Deployment
 
-The project is configured to be deployable locally or externally on a virtual machine with the context path "/BookManager". In order for the Selenium tests to pass for building or packaging, a Linux Chromedriver is present in the project root folder. For use on another OS, simply replace this with the relevant Chromedriver and change the extension in the "src/test/java/com/bae/manager/selenium/constants/Constants.java" PATH constant to match your driver.
+The project is configured to be deployable locally or externally on a virtual machine with the context path "/BookManager". In order for the Selenium tests to pass for building or packaging, a Linux Chromedriver is present in the project root folder. 
+
+For use on another OS, simply replace this with the relevant Chromedriver and change the extension in the "src/test/java/com/bae/manager/selenium/constants/Constants.java" PATH constant to match your driver.
+
+As might be suggested by the mentions of Chromedriver, this project has been designed and tested with Chrome in mind, so some of the functionality or formatting may not be compatible with other browsers, especially some of the older versions of Internet Explorer.
 
 
 <a name="review"></a>
