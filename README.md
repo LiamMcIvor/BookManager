@@ -139,19 +139,19 @@ The Update/Delete Books page was intended to be a similar list to that of the Ho
 <a name="finalLook"></a>
 ### Actual Appearance
 
-![IndexActual](./documentation/IndexActual.png)
+![IndexActual](./documentation/IndexActual.PNG)
 
 The Home page ended up being nearly identicle to the wireframe in terms of functionality, save for the absoption of the filter buttons into a combination of the search and table ordering.
 
-![AddBookActual](./documentation/AddBookActual.png)
+![AddBookActual](./documentation/AddBookActual.PNG)
 
 The Add Books page also ended up being very similar to the wireframe, with the only notable differences being the removal of the ISBN field and the change in method of input for a couple of the fields.
 
-![UpdateDeleteActual](./documentation/UpdateDeleteActual.png)
+![UpdateDeleteActual](./documentation/UpdateDeleteActual.PNG)
 
 The wireframe that was strayed furthest from was that for the Update/Delete Books page. It ended up being a similar table to that on the Home page, just with clickable rows for the user to then choose whether to update of delete the related book. 
 
-![UpdateForm](./documentation/UpdateForm.png)
+![UpdateForm](./documentation/UpdateForm.PNG)
 
 The update feature got extended to every field available to the user and was implemented on a form akin to that for adding a book, but with the book's details pre-populated for the user's convenience.
 
