@@ -1,7 +1,9 @@
 "use strict"
 
 function getLocation() {
-    return `http://${window.location.hostname}:${window.location.port}/BookManager`;
+    //return `http://${window.location.hostname}:${window.location.port}/BookManager`;
+    return `/BookManager`;
+
 }
 
 function getBookForUpdate(id) {
