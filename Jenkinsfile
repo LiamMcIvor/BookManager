@@ -23,7 +23,7 @@ pipeline {
         }
         stage('--dockerhub-push--') {
         	steps {
-        		withDockerRegistry({ credentialsId: "luke-docker", url: "" ]) {
+        		withDockerRegistry([ credentialsId: "luke-docker", url: "" ]) {
         			sh "docker push lukecottenham/book-project:$BUILD_NUMBER"
         		}
         	}
