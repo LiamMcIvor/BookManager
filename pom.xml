@@ -88,36 +88,20 @@
        </plugins>
 	</build>
 	
-<!-- <repositories> -->
-<!--     <repository> -->
-<!--       <id>book-hosted</id> -->
-<!--       <url>http://3.11.84.155:8081/repository/book-hosted/</url> -->
-<!--     </repository> -->
-<!--   </repositories> -->
+<repositories>
+    <repository>
+      <id>book-hosted</id>
+      <url>http://3.11.84.155:8081/repository/book-hosted/</url>
+    </repository>
+  </repositories>
 	
-<!-- <distributionManagement> -->
-<!--     <snapshotRepository> -->
-<!--       <id>nexus</id> -->
-<!-- 	<name>book-hosted</name> -->
-<!--       <url>http://3.11.84.155:8081/repository/book-hosted/</url> -->
-<!--     </snapshotRepository> -->
-<!--  </distributionManagement> -->
-	
-	<distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>book-hosted</name>
-            <url>
-http://3.11.84.155:8081/repository/book-hosted/
-</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>book-snapshots</name>
-            <url>
-http://3.11.84.155:8081/repository/book-hosted/
-</url>
-        </snapshotRepository>
-    </distributionManagement>
+<distributionManagement>
+    <snapshotRepository>
+      <id>nexus</id>
+	<name>book-hosted</name>
+      <url>http://3.11.84.155:8081/repository/book-hosted/</url>
+    </snapshotRepository>
+ </distributionManagement>
+
 	
 </project>
