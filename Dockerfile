@@ -8,7 +8,7 @@ WORKDIR /opt/bookmanager
 
 # copy the JAR file that was created in the previous
 # build stage to the application folder in this build stage
-COPY --from=0 /build/target/bookmanager.jar app.jar
+COPY --from=0 /build/target/*.jar app.jar
 
 # create an entrypoint to run the application
 ENTRYPOINT ["/usr/bin/java", "-jar", "app.jar"]
