@@ -88,5 +88,12 @@
        </plugins>
 		<finalName>${project.artifactId}</finalName>
 	</build>
-
+	
+<repositories>
+    <repository>
+      <id>maven-group</id>
+      <url>http://3.11.84.155:8081/repository/book-hosted/</url>
+    </repository>
+  </repositories>
+	
 </project>
