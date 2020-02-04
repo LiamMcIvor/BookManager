@@ -13,13 +13,20 @@ pipeline {
         }
         stage('--package--') {
             steps {
-            sh "mvn package"
+            	sh "mvn package"
             }
         }
         stage('--deploy--') {
             steps {
-            sh "mvn deploy"
+            	sh "mvn deploy"
             }
         }
+        stage('--dockerhub--') {
+        	steps {
+        		sh "docker build -t book-project ."
+        		sh "docker push lukecottenham/book-project:latest"
+        	}
+        }
+        
     }
 }
