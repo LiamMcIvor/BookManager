@@ -18,13 +18,13 @@ pipeline {
         }
         stage('--docker-build--') {
         	steps {
-        		sh "docker build -t lukecottenham/book-project:$BUILD_NUMBER ."
+        		sh "sudo docker build -t lukecottenham/book-project:$BUILD_NUMBER ."
         	}
         }
         stage('--dockerhub-push--') {
         	steps {
         		withDockerRegistry([ credentialsId: "luke-docker", url: "" ]) {
-        			sh "docker push lukecottenham/book-project:$BUILD_NUMBER"
+        			sh "sudo docker push lukecottenham/book-project:$BUILD_NUMBER"
         		}
         	}
         }
