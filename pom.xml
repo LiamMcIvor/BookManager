@@ -88,12 +88,12 @@
        </plugins>
 	</build>
 	
-<repositories>
+<!-- <repositories>
     <repository>
       <id>book-hosted</id>
       <url>http://3.11.84.155:8081/repository/book-hosted/</url>
     </repository>
-  </repositories>
+  </repositories> -->
 	
 <distributionManagement>
     <snapshotRepository>
