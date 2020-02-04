@@ -98,13 +98,10 @@
 	
 <distributionManagement>
     <snapshotRepository>
-      <id>nexus-snapshots</id>
+      <id>nexus</id>
+	<name>book-hosted</name>
       <url>http://3.11.84.155:8081/repository/book-hosted/</url>
     </snapshotRepository>
-    <repository>
-      <id>nexus-releases</id>
-      <url>http://3.11.84.155:8081/repository/book-hosted/</url>
-    </repository>
  </distributionManagement>
 	
 </project>
