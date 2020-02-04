@@ -1,19 +1,3 @@
-# build from the Maven image
-# which has a maven environment configured already
-FROM maven:latest
-
-# copy our application in
-COPY . /build
-
-# change the working directory to where we are building
-# the application
-WORKDIR /build
-
-#RUN ./chromeInstall.sh
-
-# use maven to build the application
-RUN mvn clean package -DskipTests
-
 # create a new build stage from the Java image
 # which has java installed already
 FROM java:8
