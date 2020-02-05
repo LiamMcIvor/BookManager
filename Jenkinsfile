@@ -34,6 +34,14 @@ pipeline {
             	sh "mvn deploy"
             }
         }
+        stage('--test-deploy--') {
+            steps {
+            	sh "ssh -i /home/ubuntu/Project.pem ubuntu@ec2-35-176-134-117.eu-west-2.compute.amazonaws.com"
+            	sh "./docker-back-end.sh"
+            	sh "exit"
+            }
+        }
+        
         
         
     }
