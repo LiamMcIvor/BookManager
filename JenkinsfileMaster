@@ -41,7 +41,7 @@ pipeline {
         }
         stage('--selenium-test--') {
         	steps {
-        		sh "ssh -T -i /home/jenkins/Project.pem ubuntu@ec2-3-11-81-76.eu-west-2.compute.amazonaws.com cd selenium & mvn clean test"
+        		sh "ssh -T -i /home/jenkins/Project.pem ubuntu@ec2-3-11-81-76.eu-west-2.compute.amazonaws.com ./selenium-test.sh"
         	}
         }
         stage('--live-deploy--') {
