@@ -36,7 +36,7 @@ pipeline {
         }
         stage('--test-deploy--') {
             steps {
-            	sh "ssh -T -i /home/jenkins/Project.pem ubuntu@ec2-35-176-134-117.eu-west-2.compute.amazonaws.com ./docker-back-end.sh"
+            	sh "ssh -T -i /home/jenkins/Project.pem ubuntu@ec2-3-10-162-181.eu-west-2.compute.amazonaws.com ./docker-back-end.sh"
             }
         }
         
